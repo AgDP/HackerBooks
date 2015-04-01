@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "AGTLibraryTableViewController.h"
+#import "AGTLibrary.h"
 
 @interface AppDelegate ()
 
@@ -16,10 +18,28 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    
+    // Creamos una vista de tipo UIWindow
+    [self setWindow:[[UIWindow alloc]
+                     initWithFrame:[[UIScreen mainScreen] bounds]]];
+    
+    //Creo el modelo
+    AGTLibrary *library = [AGTLibrary new];
+    
+    //Creo el Controlador
+    AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];
+    
+    //Creo el navigationController
+    UINavigationController *navLib = [UINavigationController new];
+    
+    [navLib pushViewController:libraryTable animated:NO];
+    
+    //La pinto
+    self.window.rootViewController = navLib;
+    
+    // La mostramos
+    [[self window] makeKeyAndVisible];
+    
     return YES;
 }
 

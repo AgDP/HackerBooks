@@ -12,6 +12,11 @@
 		FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB3748181ACC5F980061CAD7 /* Images.xcassets */; };
 		FB37481C1ACC5F980061CAD7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB37481A1ACC5F980061CAD7 /* LaunchScreen.xib */; };
 		FB3748281ACC5F980061CAD7 /* HackerBooksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748271ACC5F980061CAD7 /* HackerBooksTests.m */; };
+		FB3748331ACC60B80061CAD7 /* AGTBook.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748321ACC60B80061CAD7 /* AGTBook.m */; };
+		FB3748371ACC60F10061CAD7 /* AGTLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748361ACC60F10061CAD7 /* AGTLibrary.m */; };
+		FB37483A1ACC65110061CAD7 /* AGTLibraryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748391ACC65110061CAD7 /* AGTLibraryTableViewController.m */; };
+		FB37483F1ACC65860061CAD7 /* AGTBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */; };
+		FB3748401ACC65860061CAD7 /* AGTBooksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +40,15 @@
 		FB3748211ACC5F980061CAD7 /* HackerBooksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerBooksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB3748261ACC5F980061CAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB3748271ACC5F980061CAD7 /* HackerBooksTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HackerBooksTests.m; sourceTree = "<group>"; };
+		FB3748311ACC60B80061CAD7 /* AGTBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTBook.h; sourceTree = "<group>"; };
+		FB3748321ACC60B80061CAD7 /* AGTBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTBook.m; sourceTree = "<group>"; };
+		FB3748351ACC60F10061CAD7 /* AGTLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTLibrary.h; sourceTree = "<group>"; };
+		FB3748361ACC60F10061CAD7 /* AGTLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTLibrary.m; sourceTree = "<group>"; };
+		FB3748381ACC65110061CAD7 /* AGTLibraryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTLibraryTableViewController.h; sourceTree = "<group>"; };
+		FB3748391ACC65110061CAD7 /* AGTLibraryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTLibraryTableViewController.m; sourceTree = "<group>"; };
+		FB37483C1ACC65860061CAD7 /* AGTBooksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTBooksViewController.h; sourceTree = "<group>"; };
+		FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTBooksViewController.m; sourceTree = "<group>"; };
+		FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTBooksViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +95,8 @@
 				FB3748181ACC5F980061CAD7 /* Images.xcassets */,
 				FB37481A1ACC5F980061CAD7 /* LaunchScreen.xib */,
 				FB3748111ACC5F980061CAD7 /* Supporting Files */,
+				FB3748341ACC60BD0061CAD7 /* Models */,
+				FB37483B1ACC65150061CAD7 /* Controllers */,
 			);
 			path = HackerBooks;
 			sourceTree = "<group>";
@@ -109,6 +125,29 @@
 				FB3748261ACC5F980061CAD7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FB3748341ACC60BD0061CAD7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FB3748311ACC60B80061CAD7 /* AGTBook.h */,
+				FB3748321ACC60B80061CAD7 /* AGTBook.m */,
+				FB3748351ACC60F10061CAD7 /* AGTLibrary.h */,
+				FB3748361ACC60F10061CAD7 /* AGTLibrary.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		FB37483B1ACC65150061CAD7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FB3748381ACC65110061CAD7 /* AGTLibraryTableViewController.h */,
+				FB3748391ACC65110061CAD7 /* AGTLibraryTableViewController.m */,
+				FB37483C1ACC65860061CAD7 /* AGTBooksViewController.h */,
+				FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */,
+				FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB37481C1ACC5F980061CAD7 /* LaunchScreen.xib in Resources */,
+				FB3748401ACC65860061CAD7 /* AGTBooksViewController.xib in Resources */,
 				FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,7 +250,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB3748371ACC60F10061CAD7 /* AGTLibrary.m in Sources */,
+				FB37483A1ACC65110061CAD7 /* AGTLibraryTableViewController.m in Sources */,
 				FB3748171ACC5F980061CAD7 /* AppDelegate.m in Sources */,
+				FB3748331ACC60B80061CAD7 /* AGTBook.m in Sources */,
+				FB37483F1ACC65860061CAD7 /* AGTBooksViewController.m in Sources */,
 				FB3748141ACC5F980061CAD7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
