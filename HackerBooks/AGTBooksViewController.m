@@ -17,8 +17,10 @@
 
 -(id) initWithModel:(AGTBook *) model{
     
-    if (self = [super init]) {
+    if (self = [super initWithNibName:nil bundle:nil]) {
         _model = model;
+        self.title = model.titulo;
+        
     }
     
     return self;
@@ -35,8 +37,12 @@
     
     
     // Sincronizar modelo -> vista
-    self.title = self.model.titulo;
+    
+    self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
+    
+    self.authors.text = self.model.autores.description;
+    self.tags.text = self.model.tags.description;
     
     
     //Si estoy dentro de un SpliVC me pongo el botón

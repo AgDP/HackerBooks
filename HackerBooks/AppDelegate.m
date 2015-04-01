@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AGTLibraryTableViewController.h"
 #import "AGTLibrary.h"
+#import "AGTBooksViewController.h"
 
 @interface AppDelegate ()
 
@@ -26,21 +27,59 @@
     //Creo el modelo
     AGTLibrary *library = [AGTLibrary new];
     
-    //Creo el Controlador
+    //Creo los Controladores
     AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];
     
-    //Creo el navigationController
+    AGTBooksViewController *bookController = [[AGTBooksViewController alloc] initWithModel:[self lastSelectedBookInModel:library]];
+    
+    
+    //Creo los navigationControllers
     UINavigationController *navLib = [UINavigationController new];
     
     [navLib pushViewController:libraryTable animated:NO];
     
+    UINavigationController *navBook = [UINavigationController new];
+    
+    [navBook pushViewController:bookController animated:YES];
+    
+    //Creo el combinador
+    UISplitViewController *split = [[UISplitViewController alloc] init];
+    
+    [split setViewControllers:@[navLib, navBook]];
+    
     //La pinto
-    self.window.rootViewController = navLib;
+    self.window.rootViewController = split;
     
     // La mostramos
     [[self window] makeKeyAndVisible];
     
     return YES;
+}
+
+-(AGTBook *) lastSelectedBookInModel: (AGTLibrary *) u{
+    
+    //Obtengo el NSUserDefaults
+   /* NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    */
+    //Saco las cordenadas del ultimo personaje
+  /*  NSArray *coords = [def objectForKey:LAST_SELECTED_BOOK];
+    NSUInteger section = [[coords objectAtIndex:0] integerValue];
+    NSUInteger pos = [[coords objectAtIndex:1] integerValue];
+  */
+    
+    
+    //Obtengo el personaje
+    AGTBook *book = [u bookTagAtIndex:0];
+    /*if (section == FAVORITE_SECTION) {
+        book = [u bookFavoriteAtIndex:pos];
+    }else{
+        book = [u bookTagAtIndex:pos];
+    }*/
+    
+    
+    //Lo devuelvo
+    return book;
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
