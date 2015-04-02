@@ -11,11 +11,16 @@
 
 @interface AGTLibrary : NSObject
 
+@property (nonatomic, strong) NSMutableDictionary *booksWithTags;
+@property (nonatomic, strong) NSArray *tagsBooks;
+
 -(NSUInteger) favoritesCount;
 -(NSUInteger) tagsCount;
 
--(AGTBook *) bookFavoriteAtIndex:(NSUInteger) index;
--(AGTBook *) bookTagAtIndex:(NSUInteger) index;
+-(NSArray *) bookFavoriteAtIndex:(NSUInteger) index;
+-(NSArray *) bookTagAtIndex: (NSString *) index;
+
+-(id) initWithArray;
 
 //	Número	total	de	libros
 -(NSUInteger)	booksCount;

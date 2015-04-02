@@ -12,15 +12,15 @@
 @interface AGTBook : NSObject
 
 @property (copy, nonatomic) NSString *titulo;
-@property (strong, nonatomic) NSDictionary *autores;
-@property (strong, nonatomic) NSDictionary *tags;
+@property (strong, nonatomic) NSArray *autores;
+@property (strong, nonatomic) NSArray *tags;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSURL *pdf;
 
 //Designated
 -(id) initWithTitulo: (NSString *)titulo
-             autores: (NSDictionary *) autores
-                tags: (NSDictionary *) tags
+             autores: (NSArray *) autores
+                tags: (NSArray *) tags
                image: (UIImage *) image
                  pdf: (NSURL *) pdf;
 

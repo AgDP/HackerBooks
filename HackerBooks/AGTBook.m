@@ -12,8 +12,8 @@
 
 
 -(id) initWithTitulo: (NSString *)titulo
-             autores: (NSDictionary *) autores
-                tags: (NSDictionary *) tags
+             autores: (NSArray *) autores
+                tags: (NSArray *) tags
                image: (UIImage *) image
                  pdf: (NSURL *) pdf{
     
@@ -26,6 +26,22 @@
     }
     
     return self;
+}
+
+-(NSString *) autores{
+    
+    NSMutableString *cadena = [[NSMutableString alloc] init];
+
+    for (int i=0; i < _autores.count; i++) {
+        if (i > 0) {
+            [cadena appendString:@","];
+        }
+        [cadena appendString:_autores[i]];
+            
+    }
+    
+    
+    return cadena;
 }
 
 @end

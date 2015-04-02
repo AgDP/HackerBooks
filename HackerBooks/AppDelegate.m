@@ -25,7 +25,7 @@
                      initWithFrame:[[UIScreen mainScreen] bounds]]];
     
     //Creo el modelo
-    AGTLibrary *library = [AGTLibrary new];
+    AGTLibrary *library = [[AGTLibrary alloc] initWithArray];
     
     //Creo los Controladores
     AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];

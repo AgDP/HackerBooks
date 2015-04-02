@@ -12,7 +12,7 @@
 @interface AGTLibrary ()
 
 @property (nonatomic, strong) NSArray *favoritesBooks;
-@property (nonatomic, strong) NSArray *tagsBooks;
+
 @property (nonatomic, strong) NSDictionary *jsonDownloaded;
 
 @end
@@ -32,53 +32,43 @@
     
     if (self = [super init]) {
         
-        //Llamamos al JSON
-        [self didRecieveData];
+        
         
         
         //Guardo el fichero para la proxima vez no tener que descargarlo
         
         
         
-        /*
+        
         //Creo un par de libros
 
-        NSData *book1Image = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:@"http://hackershelf.com/media/cache/46/61/46613d24474140c53ea6b51386f888ff.jpg"]];
-        UIImage *image1 = [UIImage imageWithData:book1Image];
         
         
-        NSDictionary *book1Authores = @{@"author1" : @"Allen B. Downey"};
-        NSDictionary *book1Tags = @{@"tag1" : @"c"};
-        
-        
-        AGTBook *book1 = [[AGTBook alloc] initWithTitulo:@"IOS" autores:book1Authores tags:book1Tags image:image1 pdf:nil];
-        
-        NSData *book2Image = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: @"http://hackershelf.com/media/cache/f3/fe/f3fec7d794709480759e9b311fb7f2ec.jpg"]];
-        NSDictionary *book2Authores = @{@"author2" : @"Sanjoy Mahajan"};
-        NSDictionary *book2Tags = @{@"tag2" : @"python"};
-        
-        AGTBook *book2 = [[AGTBook alloc] initWithTitulo:@"Android" autores:book2Authores tags:book2Tags image:[UIImage imageWithData:book2Image] pdf:nil];
-
-        //AGTBook *book3 = [[AGTBook alloc] initWithTitulo:@"Python" autores:nil tags:nil photo:nil pdf:nil];
-        
-        self.tagsBooks = @[book2,book1];
-        self.favoritesBooks = @[book2,book1];
-        */
     }
     
     return self;
     
 }
 
+-(id) initWithArray{
+    
+    if (self = [super init]) {
+        //Llamamos al JSON
+        [self didRecieveData];
+    }
+    
+    return self;
+}
+
 //Devuelvo un bookFavorite en concreto
--(AGTBook *) bookFavoriteAtIndex:(NSUInteger) index{
+-(NSArray *) bookFavoriteAtIndex:(NSUInteger) index{
     
     return [self.favoritesBooks objectAtIndex:index];
 }
 
 //Devuelvo un bookTag en concreto
--(AGTBook *) bookTagAtIndex:(NSUInteger) index{
-    return [self.tagsBooks objectAtIndex:index];
+-(NSArray *) bookTagAtIndex: (NSString *) index{
+    return [self.booksWithTags objectForKey:index];
 }
 
 
@@ -130,7 +120,8 @@
 
 -(void) didChangeJSONToData {
     
-NSMutableArray *arrat = [self.tagsBooks mutableCopy];
+
+    self.booksWithTags = [[NSMutableDictionary alloc] init];
 //    NSDictionary *theValues = [NSDictionary dictionaryWithDictionary:[self.jsonDownloaded valueForKey:@"value"]];
     NSDictionary *dictobj = self.jsonDownloaded;
     for (id key in dictobj)
@@ -144,44 +135,51 @@ NSMutableArray *arrat = [self.tagsBooks mutableCopy];
   //    [book11 setTitulo:[value objectForKey:@"image_url"]];
     //    [book11 setTitulo:[value objectForKey:@"tags"]];
         
-        NSData *book1Image = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
-        UIImage *image1 = [UIImage imageWithData:book1Image];
+        NSData *bookImage = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
+        UIImage *image = [UIImage imageWithData:bookImage];
+        
+        NSLog([value objectForKey:@"tags"]);
+        NSArray *book1Authores = [[value objectForKey:@"authors"] componentsSeparatedByString:@","];
+        NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
         
         
-        NSDictionary *book1Authores = @{@"author1" : @"Allen B. Downey"};
-        NSDictionary *book1Tags = @{@"tag1" : @"c"};
+        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:nil];
         
-        
-        AGTBook *book1 = [[AGTBook alloc] initWithTitulo:@"IOS" autores:book1Authores tags:book1Tags image:image1 pdf:nil];
-        
-        
-        [arrat addObject:book1];
-        
-        
-        /*
-         NSString *responseJSON =;
-        Department *department = [[Department alloc] initWithString:responseJSON error:&err];
-        if (!err)
-        {
-            for (Person *person in department.accounting) {
-                
-                NSLog(@"%@", person.firstName);
-                NSLog(@"%@", person.lastName);
-                NSLog(@"%@", person.age);
+        //Voy guardando los tags y los libros primero buscando si ya existe un tag igual para organizar los libros
+        for (id c in book1Tags) {
+            if ([self.booksWithTags objectForKey:c]) {
+                NSMutableArray *arrayDeLibrosGuardados = [self.booksWithTags objectForKey:c];
+                [arrayDeLibrosGuardados addObject:book];
+                [self.booksWithTags setValue:arrayDeLibrosGuardados forKey:c];
+            }else{
+                NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
+                [arrayDeLibrosGuardados addObject:book];
+                [self.booksWithTags addEntriesFromDictionary:@{c:arrayDeLibrosGuardados}];
             }
-            
-            for (Person *person in department.sales) {
-                
-                NSLog(@"%@", person.firstName);
-                NSLog(@"%@", person.lastName);
-                NSLog(@"%@", person.age);
-            }
-        }*/
+        }
+        
         
     }
     
-    self.tagsBooks = arrat;
+    //Ordeno los tags alfabeticamente
+    NSMutableArray *tagsLibros = [[NSMutableArray alloc] init];
+    for (id keyTags in self.booksWithTags) {
+        [tagsLibros addObject:keyTags];
+    }
+    
+    [tagsLibros sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    self.tagsBooks = tagsLibros;
     //self.favoritesBooks = @[book1,book1];
+    
+    // mandamos una notificacion
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    NSDictionary *dict = @{@"bookNotify" : @"change"};
+    
+    NSNotification *n = [NSNotification notificationWithName:@"dataChange" object:self userInfo:dict];
+    
+    [nc postNotification:n];
     
     
 }

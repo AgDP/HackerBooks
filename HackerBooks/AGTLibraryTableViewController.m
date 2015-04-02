@@ -9,6 +9,7 @@
 #import "AGTLibraryTableViewController.h"
 #import "AGTLibrary.h"
 #import "AGTBooksViewController.h"
+#import "AGTBook.h"
 
 @interface AGTLibraryTableViewController ()
 
@@ -31,12 +32,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    //Alta en notificación
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    [nc addObserver:self
+           selector:@selector(notifyThatBooksDidChange:)
+               name:@"dataChange"
+             object:nil];
+    
+    
+    
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -47,7 +61,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return self.model.tagsCount+1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -56,7 +70,9 @@
     if (section == FAVORITE_SECTION) {
         return self.model.favoritesCount;
     }else{
-        return self.model.tagsCount;
+        NSString *tag = [self.model.tagsBooks objectAtIndex:section-1];
+        NSArray *arr = [self.model.booksWithTags objectForKey:tag];
+        return arr.count;
     }
 }
 
@@ -64,20 +80,25 @@
     if (section == FAVORITE_SECTION) {
         return @"Favorites";
     }else{
-        return @"Tags";
+        return [self.model.tagsBooks objectAtIndex:section-1];
     }
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    AGTBook *book = nil;
+    NSArray *tags = nil;
     
     if (indexPath.section == FAVORITE_SECTION) {
-        book = [self.model bookFavoriteAtIndex:indexPath.row];
+        tags = [self.model bookFavoriteAtIndex:indexPath.row];
     }else{
-        book = [self.model bookTagAtIndex:indexPath.row];
+        NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
+        
+        tags = [self.model bookTagAtIndex:tag];
     }
+    
+    AGTBook *book = [tags objectAtIndex:indexPath.row];
+    
     
     //Crear una celda
     static NSString *cellId = @"BooksCell";
@@ -93,24 +114,31 @@
     //Sincronizar modelo (pj) con la vista (celda)
     cell.imageView.image = book.image;
     cell.textLabel.text = book.titulo;
-//    cell.detailTextLabel.text = character.name;
+    cell.detailTextLabel.text = book.autores;
     
     //Devolverla
     return cell;
 }
 
 
+
 #pragma mark - Delegate
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
-    AGTBook *book = nil;
+    //AGTBook *book = nil;
+    NSArray *tags = nil;
     
     if (indexPath.section == FAVORITE_SECTION) {
-        book = [self.model bookFavoriteAtIndex:indexPath.row];
+        //book = [self.model bookFavoriteAtIndex:indexPath.row];
     }else{
-        book = [self.model bookTagAtIndex:indexPath.row];
+        NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
+        
+        tags = [self.model bookTagAtIndex:tag];
+        
+        //book = [self.model bookTagAtIndex:indexPath.description];
     }
+    AGTBook *book = [tags objectAtIndex:indexPath.row];
     
     //Avisar al delegado siempre y cuando entienda el mensaje
     if ([self.delegate respondsToSelector:@selector(libraryTableViewController:didSelectedBook:)])  {
@@ -129,6 +157,16 @@
     
     //Hago un push
     [self.navigationController pushViewController:bookController animated:YES];
+    
+}
+
+#pragma mark - Notification
+
+// "dataChange"
+-(void) notifyThatBooksDidChange:(NSNotification *) notification{
+    
+    //Actualizo la tabla cuando carga los datos
+    [self.tableView reloadData];
     
 }
 
