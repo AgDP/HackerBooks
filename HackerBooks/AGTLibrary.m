@@ -111,7 +111,7 @@
                                json = [NSJSONSerialization JSONObjectWithData:data
                                                                       options:0
                                                                         error:nil];
-                               NSLog(@"Async JSON: %@", json);
+                               //NSLog(@"Async JSON: %@", json);
                                self.jsonDownloaded = json;
                                [self didChangeJSONToData];
                            }];
@@ -138,7 +138,6 @@
         NSData *bookImage = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
         UIImage *image = [UIImage imageWithData:bookImage];
         
-        NSLog([value objectForKey:@"tags"]);
         NSArray *book1Authores = [[value objectForKey:@"authors"] componentsSeparatedByString:@","];
         NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
         

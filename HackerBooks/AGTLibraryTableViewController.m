@@ -115,6 +115,9 @@
     cell.imageView.image = book.image;
     cell.textLabel.text = book.titulo;
     cell.detailTextLabel.text = book.autores;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+
     
     //Devolverla
     return cell;

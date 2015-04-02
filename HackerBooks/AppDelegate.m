@@ -20,6 +20,30 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    
+    //Valor por defecto para el último personaje seleccionado
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    
+    NSLog([def objectForKey:@"firstTime"]);
+    
+    if (![def objectForKey:@"firstTime"]) {
+        
+        //Descargo JSON
+        [self didRecieveData];
+       
+        
+        //Guardamos un valor por defecto
+        [def setObject:@"1" forKey:@"firstTime"];
+        
+        //Por si acaso...
+        [def synchronize];
+    }else{
+        NSLog(@" No es la primera vez");
+        
+    }
+    
+    NSLog([def objectForKey:@"firstTime"]);
+    
     // Creamos una vista de tipo UIWindow
     [self setWindow:[[UIWindow alloc]
                      initWithFrame:[[UIScreen mainScreen] bounds]]];
@@ -111,5 +135,49 @@
 }
 
 
+- (void) didRecieveData{
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"]];
+    
+    __block NSDictionary *json;
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               json = [NSJSONSerialization JSONObjectWithData:data
+                                                                      options:0
+                                                                        error:nil];
+                               //NSLog(@"Async JSON: %@", json);
+                               //self.jsonDownloaded = json;
+                               [self saveDataIntoSandbox: (NSDictionary *) data];
+                           }];
+    
+}
+
+-(void) saveDataIntoSandbox: (NSData *) data{
+    
+    //Averiguar la URL a la carpeta Caches
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    NSArray *urls = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSURL *url = [urls lastObject];
+    
+    //Añadir el componente del nombre del fichero
+    url = [url URLByAppendingPathComponent:@"JSON.txt"];
+    
+    //Guardar algo
+    NSError *err = nil;
+    //BOOL rc = [@"Hola Mundo" writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error: &err];
+    
+    [data writeToURL:url atomically:YES];
+    
+    //Comprobar que se guarda
+    
+    //NO ERROR
+    NSString *str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error: &err];
+    NSLog(@"Hemos leido: %@", str);
+    
+    
+    
+}
 
 @end

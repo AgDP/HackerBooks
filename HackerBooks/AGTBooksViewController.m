@@ -35,6 +35,8 @@
     // cuando estás en un combinador
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    //Cambiamos las fuentes y tamaños
+    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
     
     // Sincronizar modelo -> vista
     

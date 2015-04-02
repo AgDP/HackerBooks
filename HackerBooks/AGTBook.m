@@ -44,4 +44,21 @@
     return cadena;
 }
 
+-(NSString *) tags{
+    
+    NSMutableString *cadena = [[NSMutableString alloc] init];
+    
+    for (int i=0; i < _tags.count; i++) {
+        if (i > 0) {
+            [cadena appendString:@","];
+        }
+        [cadena appendString:_tags[i]];
+        
+    }
+    
+    
+    return cadena;
+    
+}
+
 @end
