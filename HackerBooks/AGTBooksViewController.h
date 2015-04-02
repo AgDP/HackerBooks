@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AGTLibraryTableViewController.h"
 @class AGTBook;
 
-@interface AGTBooksViewController : UIViewController<UISplitViewControllerDelegate>
+
+@interface AGTBooksViewController : UIViewController<UISplitViewControllerDelegate, AGTLibraryTableViewControllerDelegate>
 
 @property (strong, nonatomic) AGTBook *model;
 @property (weak, nonatomic) IBOutlet UIImageView *photo;

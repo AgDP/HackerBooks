@@ -42,10 +42,16 @@
     
     [navBook pushViewController:bookController animated:YES];
     
+    
     //Creo el combinador
     UISplitViewController *split = [[UISplitViewController alloc] init];
     
     [split setViewControllers:@[navLib, navBook]];
+    
+    
+    //Asignamos delegados
+    split.delegate = bookController;
+    libraryTable.delegate = bookController;
     
     //La pinto
     self.window.rootViewController = split;

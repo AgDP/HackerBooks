@@ -14,7 +14,7 @@
 -(id) initWithTitulo: (NSString *)titulo
              autores: (NSDictionary *) autores
                 tags: (NSDictionary *) tags
-               photo: (UIImage *) image
+               image: (UIImage *) image
                  pdf: (NSURL *) pdf{
     
     if (self = [super init]) {

@@ -7,10 +7,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AGTBooksViewController">
             <connections>
                 <outlet property="authors" destination="pEY-Ii-s9f" id="uue-Gk-nkH"/>
-                <outlet property="photo" destination="4qc-ob-Lqu" id="jyO-In-OqM"/>
+                <outlet property="photo" destination="ZUZ-WF-mtG" id="oN2-MY-Qu6"/>
                 <outlet property="tags" destination="u2G-K4-emm" id="qM3-oJ-00D"/>
                 <outlet property="titulo" destination="9Qy-Gc-S9K" id="aUw-CJ-Gxg"/>
-                <outlet property="view" destination="4qc-ob-Lqu" id="I7I-Dm-Rmd"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="Wkg-V1-IMU"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -57,14 +57,14 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Qy-Gc-S9K">
-                    <rect key="frame" x="8" y="444" width="752" height="137"/>
+                    <rect key="frame" x="0.0" y="0.0" width="760" height="137"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4qc-ob-Lqu">
-                    <rect key="frame" x="0.0" y="0.0" width="768" height="1029"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ZUZ-WF-mtG">
+                    <rect key="frame" x="0.0" y="145" width="785" height="584"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>

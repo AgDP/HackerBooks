@@ -40,7 +40,6 @@
     
     self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
-    
     self.authors.text = self.model.autores.description;
     self.tags.text = self.model.tags.description;
     
@@ -81,15 +80,17 @@
     
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void) libraryTableViewController:(AGTLibraryTableViewController *)library didSelectedBook:(AGTBook *)book{
+    
+    //Actualizo el modelo
+    self.model = book;
+    
+    //sync modelo y vista
+    self.titulo.text = self.model.titulo;
+    self.photo.image = self.model.image;
+    self.authors.text = self.model.autores.description;
+    self.tags.text = self.model.tags.description;
 }
-*/
 
 
 -(IBAction)displayPdf:(id)sender{

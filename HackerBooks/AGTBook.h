@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface AGTBook : NSObject
 
@@ -21,7 +21,7 @@
 -(id) initWithTitulo: (NSString *)titulo
              autores: (NSDictionary *) autores
                 tags: (NSDictionary *) tags
-               photo: (UIImage *) image
+               image: (UIImage *) image
                  pdf: (NSURL *) pdf;
 
 @end

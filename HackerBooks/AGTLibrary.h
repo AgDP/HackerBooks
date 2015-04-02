@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class AGTBook;
+#import "AGTBook.h"
 
 @interface AGTLibrary : NSObject
 
