@@ -34,16 +34,6 @@
         
         
         
-        
-        //Guardo el fichero para la proxima vez no tener que descargarlo
-        
-        
-        
-        
-        //Creo un par de libros
-
-        
-        
     }
     
     return self;
@@ -54,7 +44,9 @@
     
     if (self = [super init]) {
         //Llamamos al JSON
-        [self didRecieveData];
+        //[self didRecieveData];
+        [self obtenerArrayDeJSONInDocuments];
+        [self didChangeJSONToData];
     }
     
     return self;
@@ -100,6 +92,7 @@
     return nil;
 }
 
+/*
 - (void) didRecieveData{
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"]];
@@ -116,27 +109,31 @@
                                [self didChangeJSONToData];
                            }];
     
-}
+}*/
 
 -(void) didChangeJSONToData {
     
 
     self.booksWithTags = [[NSMutableDictionary alloc] init];
-//    NSDictionary *theValues = [NSDictionary dictionaryWithDictionary:[self.jsonDownloaded valueForKey:@"value"]];
+
     NSDictionary *dictobj = self.jsonDownloaded;
     for (id key in dictobj)
     {
-    //    AGTBook *book11 = [[AGTBook alloc] init];
         NSDictionary *value = key;
-        //[value ];
-    //    [book11 setTitulo:[value objectForKey:@"title"]];
   //      [book11 setTitulo:[value objectForKey:@"pdf_url"]];
-    //    [book11 setTitulo:[value objectForKey:@"authors"]];
-  //    [book11 setTitulo:[value objectForKey:@"image_url"]];
-    //    [book11 setTitulo:[value objectForKey:@"tags"]];
+
         
-        NSData *bookImage = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
-        UIImage *image = [UIImage imageWithData:bookImage];
+        //NSData *bookImage = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
+        //UIImage *image = [UIImage imageWithData:bookImage];
+        //Guardamos la imagen con el nombre del libro + jpg
+        NSMutableString *nombreLibro = [[NSMutableString alloc] init];
+        [nombreLibro appendString:@"Documents/"];
+        [nombreLibro appendString:[value objectForKey:@"title"]];
+        [nombreLibro appendString:@".jpg"];
+        
+        //Averiguar la URL a la carpeta Documents
+        NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:nombreLibro];
+        UIImage* image = [UIImage imageWithContentsOfFile:jpgPath];
         
         NSArray *book1Authores = [[value objectForKey:@"authors"] componentsSeparatedByString:@","];
         NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
@@ -156,7 +153,6 @@
                 [self.booksWithTags addEntriesFromDictionary:@{c:arrayDeLibrosGuardados}];
             }
         }
-        
         
     }
     
@@ -181,6 +177,24 @@
     [nc postNotification:n];
     
     
+}
+
+
+-(void) obtenerArrayDeJSONInDocuments{
+    
+    //Averiguar la URL a la carpeta Documents
+    NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/JSON.txt"];
+    NSError *error = nil;
+    
+    NSData *JSONData = [NSData dataWithContentsOfFile:jsonFile options:NSDataReadingMappedIfSafe error:&error];
+    
+    // Create an Objective-C object from JSON Data
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:JSONData
+                                                   options:0
+                                                     error:nil];
+    
+    self.jsonDownloaded = json;
 }
 
 @end

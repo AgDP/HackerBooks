@@ -148,14 +148,15 @@
                                                                         error:nil];
                                //NSLog(@"Async JSON: %@", json);
                                //self.jsonDownloaded = json;
-                               [self saveDataIntoSandbox: (NSDictionary *) data];
+                               [self saveDataIntoSandbox: (NSData *) data];
+                               [self saveImagesIntoDcouments: (NSDictionary *) json];
                            }];
     
 }
 
 -(void) saveDataIntoSandbox: (NSData *) data{
     
-    //Averiguar la URL a la carpeta Caches
+    //Averiguar la URL a la carpeta Documents
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSArray *urls = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
@@ -169,14 +170,38 @@
     //BOOL rc = [@"Hola Mundo" writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error: &err];
     
     [data writeToURL:url atomically:YES];
+
     
-    //Comprobar que se guarda
+}
+
+-(void) saveImagesIntoDcouments: (NSDictionary *) json{
     
-    //NO ERROR
-    NSString *str = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error: &err];
-    NSLog(@"Hemos leido: %@", str);
-    
-    
+    NSDictionary *dictobj = json;
+    for (id key in dictobj)
+    {
+        NSDictionary *value = key;
+        //      [book11 setTitulo:[value objectForKey:@"pdf_url"]];
+        
+        
+        NSData *bookImage = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[[value objectForKey:@"image_url"] description]]];
+        
+        
+        //AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:nil];
+        
+        //Guardamos la imagen con el nombre del libro + jpg
+        NSMutableString *nombreLibro = [[NSMutableString alloc] init];
+        [nombreLibro appendString:@"Documents/"];
+        [nombreLibro appendString:[value objectForKey:@"title"]];
+        [nombreLibro appendString:@".jpg"];
+        
+        //Averiguar la URL a la carpeta Documents
+        NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:nombreLibro];
+        
+
+        
+        [bookImage writeToFile:jpgPath atomically:YES];
+        
+    }
     
 }
 
