@@ -45,6 +45,8 @@
     self.authors.text = self.model.autores.description;
     self.tags.text = self.model.tags.description;
     
+    self.
+
     
     //Si estoy dentro de un SpliVC me pongo el botón
     self.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -97,6 +99,29 @@
 
 -(IBAction)displayPdf:(id)sender{
 
+    
+}
+
+-(IBAction)markFavorite:(id)sender{
+    
+    // mandamos una notificacion
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    //Obtengo el modelo
+    AGTBook *book = self.model;
+    
+    NSDictionary *dict = @{@"bookFavorite" : book};
+    
+    NSNotification *n = [NSNotification notificationWithName:@"favoriteChange" object:self userInfo:dict];
+    
+    [nc postNotification:n];
+    
+    UIButton *button = (UIButton *)sender;
+    //NSString *buttonTitle = button.currentTitle;
+    UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [button setImage:butYe forState:UIControlStateNormal];
+    //[button setTitle:@"Ya es favorito" forState:UIControlStateNormal];
+    
     
 }
 

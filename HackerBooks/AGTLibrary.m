@@ -11,8 +11,6 @@
 
 @interface AGTLibrary ()
 
-@property (nonatomic, strong) NSArray *favoritesBooks;
-
 @property (nonatomic, strong) NSDictionary *jsonDownloaded;
 
 @end
@@ -21,7 +19,7 @@
 
 #pragma mark - Properties
 -(NSUInteger) favoritesCount{
-    return self.favoritesBooks.count;
+    return [[self.booksWithFavorites objectForKey:@"favorite"]count];
 }
 
 -(NSUInteger) tagsCount{
@@ -43,6 +41,10 @@
 -(id) initWithArray{
     
     if (self = [super init]) {
+        
+        self.favoritesBooks = [[NSMutableArray alloc] init];
+        self.booksWithFavorites = [[NSMutableDictionary alloc] init];
+        
         //Llamamos al JSON
         //[self didRecieveData];
         [self obtenerArrayDeJSONInDocuments];
@@ -53,9 +55,8 @@
 }
 
 //Devuelvo un bookFavorite en concreto
--(NSArray *) bookFavoriteAtIndex:(NSUInteger) index{
-    
-    return [self.favoritesBooks objectAtIndex:index];
+-(NSArray *) bookFavoriteAtIndex:(NSString *) index{
+    return [self.booksWithFavorites objectForKey:index];
 }
 
 //Devuelvo un bookTag en concreto
@@ -117,8 +118,7 @@
     self.booksWithTags = [[NSMutableDictionary alloc] init];
 
     NSDictionary *dictobj = self.jsonDownloaded;
-    for (id key in dictobj)
-    {
+    for (id key in dictobj){
         NSDictionary *value = key;
   //      [book11 setTitulo:[value objectForKey:@"pdf_url"]];
 
@@ -139,7 +139,7 @@
         NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
         
         
-        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:nil];
+        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:nil isFavorite: FALSE];
         
         //Voy guardando los tags y los libros primero buscando si ya existe un tag igual para organizar los libros
         for (id c in book1Tags) {

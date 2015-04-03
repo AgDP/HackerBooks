@@ -15,7 +15,8 @@
              autores: (NSArray *) autores
                 tags: (NSArray *) tags
                image: (UIImage *) image
-                 pdf: (NSURL *) pdf{
+                 pdf: (NSURL *) pdf
+          isFavorite: (BOOL) isFavorite{
     
     if (self = [super init]) {
         _titulo = titulo;
@@ -23,6 +24,7 @@
         _tags = tags;
         _image = image;
         _pdf = pdf;
+        _isFavorite = isFavorite;
     }
     
     return self;

@@ -16,12 +16,14 @@
 @property (strong, nonatomic) NSArray *tags;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) NSURL *pdf;
+@property (nonatomic) BOOL isFavorite;
 
 //Designated
 -(id) initWithTitulo: (NSString *)titulo
              autores: (NSArray *) autores
                 tags: (NSArray *) tags
                image: (UIImage *) image
-                 pdf: (NSURL *) pdf;
+                 pdf: (NSURL *) pdf
+          isFavorite: (BOOL) isFavorite;
 
 @end

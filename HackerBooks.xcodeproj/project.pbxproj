@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB0E30FD1ACF0EE900634377 /* starYe.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0E30FB1ACF0EE900634377 /* starYe.png */; };
+		FB0E30FE1ACF0EE900634377 /* starBla.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0E30FC1ACF0EE900634377 /* starBla.png */; };
 		FB3748141ACC5F980061CAD7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748131ACC5F980061CAD7 /* main.m */; };
 		FB3748171ACC5F980061CAD7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748161ACC5F980061CAD7 /* AppDelegate.m */; };
 		FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB3748181ACC5F980061CAD7 /* Images.xcassets */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FB0E30FB1ACF0EE900634377 /* starYe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starYe.png; sourceTree = "<group>"; };
+		FB0E30FC1ACF0EE900634377 /* starBla.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starBla.png; sourceTree = "<group>"; };
 		FB37480E1ACC5F980061CAD7 /* HackerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB3748121ACC5F980061CAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB3748131ACC5F980061CAD7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -69,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB0E30FA1ACF0ECB00634377 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FB0E30FB1ACF0EE900634377 /* starYe.png */,
+				FB0E30FC1ACF0EE900634377 /* starBla.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		FB3748051ACC5F980061CAD7 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +103,7 @@
 		FB3748101ACC5F980061CAD7 /* HackerBooks */ = {
 			isa = PBXGroup;
 			children = (
+				FB0E30FA1ACF0ECB00634377 /* Resources */,
 				FB3748151ACC5F980061CAD7 /* AppDelegate.h */,
 				FB3748161ACC5F980061CAD7 /* AppDelegate.m */,
 				FB3748181ACC5F980061CAD7 /* Images.xcassets */,
@@ -232,6 +246,8 @@
 			files = (
 				FB37481C1ACC5F980061CAD7 /* LaunchScreen.xib in Resources */,
 				FB3748401ACC65860061CAD7 /* AGTBooksViewController.xib in Resources */,
+				FB0E30FD1ACF0EE900634377 /* starYe.png in Resources */,
+				FB0E30FE1ACF0EE900634377 /* starBla.png in Resources */,
 				FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,6 +456,7 @@
 				FB37482D1ACC5F980061CAD7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FB37482E1ACC5F980061CAD7 /* Build configuration list for PBXNativeTarget "HackerBooksTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +465,7 @@
 				FB3748301ACC5F980061CAD7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

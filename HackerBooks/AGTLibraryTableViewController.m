@@ -38,7 +38,7 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    //Alta en notificación
+    //Alta en notificación cargada la tabla
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     
     [nc addObserver:self
@@ -47,9 +47,30 @@
              object:nil];
     
     
+    //Alta en notificación de cambio en favoritos
+    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
+    
+    [ncFavorite addObserver:self
+           selector:@selector(notifyThatFavoritesDidChange:)
+               name:@"favoriteChange"
+             object:nil];
     
     
 }
+
+-(void) viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    
+    //Me doy de baja de las notificaciones
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void) dealloc{
+    //Me doy de baja de las notificaciones
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -61,7 +82,9 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return self.model.tagsCount+1;
+    int numberSection = 1;
+    numberSection += self.model.tagsCount;
+    return numberSection;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -70,7 +93,9 @@
     if (section == FAVORITE_SECTION) {
         return self.model.favoritesCount;
     }else{
-        NSString *tag = [self.model.tagsBooks objectAtIndex:section-1];
+        int sectionABuscar = section;
+        sectionABuscar -= 1;
+        NSString *tag = [self.model.tagsBooks objectAtIndex:sectionABuscar];
         NSArray *arr = [self.model.booksWithTags objectForKey:tag];
         return arr.count;
     }
@@ -90,13 +115,12 @@
     NSArray *tags = nil;
     
     if (indexPath.section == FAVORITE_SECTION) {
-        tags = [self.model bookFavoriteAtIndex:indexPath.row];
+        tags = [self.model bookFavoriteAtIndex:@"favorite"];
     }else{
         NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
         
         tags = [self.model bookTagAtIndex:tag];
     }
-    
     AGTBook *book = [tags objectAtIndex:indexPath.row];
     
     
@@ -167,6 +191,59 @@
 
 // "dataChange"
 -(void) notifyThatBooksDidChange:(NSNotification *) notification{
+    
+    //Actualizo la tabla cuando carga los datos
+    [self.tableView reloadData];
+    
+}
+
+// "favoritesChange"
+-(void) notifyThatFavoritesDidChange:(NSNotification *) notification{
+    
+    
+    //Sacamos el personaje
+    NSDictionary *books = notification.userInfo;
+    
+    
+    //Guardo los datos en el modelo
+    for (id key in books){
+        bool existe = false;
+        AGTBook *book = [books objectForKey:key];
+        book.isFavorite = TRUE;
+        if ([self.model.booksWithFavorites objectForKey:@"favorite"]) {
+            NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:@"favorite"];
+            
+            //Me creo este array para la iteracion ya que si no falla al añadir al mismo array
+            NSMutableArray *arrayParaIterar = [[NSMutableArray alloc] init];
+            [arrayParaIterar addObjectsFromArray:arrayDeLibrosGuardados];
+            
+            //******CAmbiar esto que hace daño a los ojos********
+            for (AGTBook* obj in arrayParaIterar){
+                if([obj.titulo isEqualToString: book.titulo]){
+                    existe = true;
+                }
+                    
+            }
+            if (!existe) {
+                [arrayDeLibrosGuardados addObject:book];
+                [self.model.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:@"favorite"];
+                // [self.model.favoritesBooks addObject:book.titulo];
+            }
+            
+            
+        }else{
+            NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
+            [arrayDeLibrosGuardados addObject:book];
+            [self.model.booksWithFavorites addEntriesFromDictionary:@{@"favorite":arrayDeLibrosGuardados}];
+           // [self.model.favoritesBooks addObject:book.titulo];
+        }
+        
+        
+        
+    }
+    
+    NSLog(@"numero de favoritos: %d",self.model.favoritesCount);
+    
     
     //Actualizo la tabla cuando carga los datos
     [self.tableView reloadData];
