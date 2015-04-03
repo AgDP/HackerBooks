@@ -45,7 +45,14 @@
     self.authors.text = self.model.autores.description;
     self.tags.text = self.model.tags.description;
     
-    self.
+    if (self.model.isFavorite) {
+        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.favorite setImage:butYe forState:UIControlStateNormal];
+    }else{
+        //Añado la imagen al boton
+        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.favorite setImage:butBla forState:UIControlStateNormal];
+    }
 
     
     //Si estoy dentro de un SpliVC me pongo el botón
@@ -90,6 +97,16 @@
     self.model = book;
     
     //sync modelo y vista
+    
+    if (self.model.isFavorite) {
+        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.favorite setImage:butYe forState:UIControlStateNormal];
+    }else{
+        //Añado la imagen al boton
+        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [self.favorite setImage:butBla forState:UIControlStateNormal];
+    }
+    
     self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
     self.authors.text = self.model.autores.description;
@@ -109,6 +126,17 @@
     
     //Obtengo el modelo
     AGTBook *book = self.model;
+    UIButton *button = (UIButton *)sender;
+    
+    if (!self.model.isFavorite) {
+        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [button setImage:butYe forState:UIControlStateNormal];
+    }else{
+        //Añado la imagen al boton
+        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [button setImage:butBla forState:UIControlStateNormal];
+    }
+    
     
     NSDictionary *dict = @{@"bookFavorite" : book};
     
@@ -116,11 +144,10 @@
     
     [nc postNotification:n];
     
-    UIButton *button = (UIButton *)sender;
-    //NSString *buttonTitle = button.currentTitle;
-    UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    [button setImage:butYe forState:UIControlStateNormal];
-    //[button setTitle:@"Ya es favorito" forState:UIControlStateNormal];
+    
+    
+    
+    
     
     
 }

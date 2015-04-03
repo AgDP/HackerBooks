@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AGTBooksViewController">
             <connections>
                 <outlet property="authors" destination="pEY-Ii-s9f" id="uue-Gk-nkH"/>
+                <outlet property="favorite" destination="Zi6-zn-3Du" id="DeJ-Rr-XXy"/>
                 <outlet property="photo" destination="ZUZ-WF-mtG" id="oN2-MY-Qu6"/>
                 <outlet property="tags" destination="u2G-K4-emm" id="qM3-oJ-00D"/>
                 <outlet property="titulo" destination="9Qy-Gc-S9K" id="aUw-CJ-Gxg"/>

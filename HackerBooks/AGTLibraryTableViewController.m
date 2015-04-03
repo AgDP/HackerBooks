@@ -58,13 +58,6 @@
     
 }
 
--(void) viewWillDisappear:(BOOL)animated{
-    
-    [super viewWillDisappear:animated];
-    
-    //Me doy de baja de las notificaciones
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 -(void) dealloc{
     //Me doy de baja de las notificaciones
@@ -157,7 +150,7 @@
     NSArray *tags = nil;
     
     if (indexPath.section == FAVORITE_SECTION) {
-        //book = [self.model bookFavoriteAtIndex:indexPath.row];
+        tags = [self.model bookFavoriteAtIndex:@"favorite"];
     }else{
         NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
         
@@ -209,34 +202,61 @@
     for (id key in books){
         bool existe = false;
         AGTBook *book = [books objectForKey:key];
-        book.isFavorite = TRUE;
-        if ([self.model.booksWithFavorites objectForKey:@"favorite"]) {
+        
+        if (book.isFavorite) {
+            book.isFavorite = FALSE;
+            
+            
             NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:@"favorite"];
             
             //Me creo este array para la iteracion ya que si no falla al añadir al mismo array
             NSMutableArray *arrayParaIterar = [[NSMutableArray alloc] init];
             [arrayParaIterar addObjectsFromArray:arrayDeLibrosGuardados];
             
+            
             //******CAmbiar esto que hace daño a los ojos********
             for (AGTBook* obj in arrayParaIterar){
                 if([obj.titulo isEqualToString: book.titulo]){
-                    existe = true;
-                }
+                    NSLog(@"index: %d",[arrayDeLibrosGuardados indexOfObject:obj]);
+                    NSLog(@"Nombre libro: %@, y borarremos: %@",book.titulo,[[arrayDeLibrosGuardados objectAtIndex:[arrayDeLibrosGuardados indexOfObject:obj]] titulo]);
+                    [arrayDeLibrosGuardados removeObjectAtIndex:[arrayDeLibrosGuardados indexOfObject:obj]];
                     
-            }
-            if (!existe) {
-                [arrayDeLibrosGuardados addObject:book];
-                [self.model.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:@"favorite"];
-                // [self.model.favoritesBooks addObject:book.titulo];
+                }
+                
             }
             
             
         }else{
-            NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
-            [arrayDeLibrosGuardados addObject:book];
-            [self.model.booksWithFavorites addEntriesFromDictionary:@{@"favorite":arrayDeLibrosGuardados}];
-           // [self.model.favoritesBooks addObject:book.titulo];
+            book.isFavorite = TRUE;
+            if ([self.model.booksWithFavorites objectForKey:@"favorite"]) {
+                NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:@"favorite"];
+                
+                //Me creo este array para la iteracion ya que si no falla al añadir al mismo array
+                NSMutableArray *arrayParaIterar = [[NSMutableArray alloc] init];
+                [arrayParaIterar addObjectsFromArray:arrayDeLibrosGuardados];
+                
+                //******CAmbiar esto que hace daño a los ojos********
+                for (AGTBook* obj in arrayParaIterar){
+                    if([obj.titulo isEqualToString: book.titulo]){
+                        existe = true;
+                    }
+                    
+                }
+                if (!existe) {
+                    [arrayDeLibrosGuardados addObject:book];
+                    [self.model.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:@"favorite"];
+                    // [self.model.favoritesBooks addObject:book.titulo];
+                }
+                
+                
+            }else{
+                NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
+                [arrayDeLibrosGuardados addObject:book];
+                [self.model.booksWithFavorites addEntriesFromDictionary:@{@"favorite":arrayDeLibrosGuardados}];
+                // [self.model.favoritesBooks addObject:book.titulo];
+            }
         }
+        
         
         
         

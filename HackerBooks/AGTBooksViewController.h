@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titulo;
 @property (weak, nonatomic) IBOutlet UILabel *authors;
 @property (weak, nonatomic) IBOutlet UILabel *tags;
-@property (weak, nonatomic) IBOutlet UIImageView *favorite;
+@property (weak, nonatomic) IBOutlet UIButton *favorite;
 
 -(IBAction)displayPdf:(id)sender;
 -(IBAction)markFavorite:(id)sender;
