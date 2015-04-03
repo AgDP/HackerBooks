@@ -47,13 +47,7 @@
              object:nil];
     
     
-    //Alta en notificación de cambio en favoritos
-    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
     
-    [ncFavorite addObserver:self
-           selector:@selector(notifyThatFavoritesDidChange:)
-               name:@"favoriteChange"
-             object:nil];
     
     
 }

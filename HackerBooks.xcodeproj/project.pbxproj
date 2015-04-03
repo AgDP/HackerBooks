@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB0E30FD1ACF0EE900634377 /* starYe.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0E30FB1ACF0EE900634377 /* starYe.png */; };
 		FB0E30FE1ACF0EE900634377 /* starBla.png in Resources */ = {isa = PBXBuildFile; fileRef = FB0E30FC1ACF0EE900634377 /* starBla.png */; };
+		FB0E31001ACF44B300634377 /* yodaReading.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB0E30FF1ACF44B300634377 /* yodaReading.jpg */; };
 		FB3748141ACC5F980061CAD7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748131ACC5F980061CAD7 /* main.m */; };
 		FB3748171ACC5F980061CAD7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748161ACC5F980061CAD7 /* AppDelegate.m */; };
 		FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB3748181ACC5F980061CAD7 /* Images.xcassets */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		FB0E30FB1ACF0EE900634377 /* starYe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starYe.png; sourceTree = "<group>"; };
 		FB0E30FC1ACF0EE900634377 /* starBla.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starBla.png; sourceTree = "<group>"; };
+		FB0E30FF1ACF44B300634377 /* yodaReading.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yodaReading.jpg; sourceTree = "<group>"; };
 		FB37480E1ACC5F980061CAD7 /* HackerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB3748121ACC5F980061CAD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB3748131ACC5F980061CAD7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 		FB0E30FA1ACF0ECB00634377 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FB0E30FF1ACF44B300634377 /* yodaReading.jpg */,
 				FB0E30FB1ACF0EE900634377 /* starYe.png */,
 				FB0E30FC1ACF0EE900634377 /* starBla.png */,
 			);
@@ -249,6 +252,7 @@
 				FB0E30FD1ACF0EE900634377 /* starYe.png in Resources */,
 				FB0E30FE1ACF0EE900634377 /* starBla.png in Resources */,
 				FB3748191ACC5F980061CAD7 /* Images.xcassets in Resources */,
+				FB0E31001ACF44B300634377 /* yodaReading.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

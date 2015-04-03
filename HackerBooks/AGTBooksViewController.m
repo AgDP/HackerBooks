@@ -35,6 +35,33 @@
     // cuando estás en un combinador
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    if ([self.model.titulo length] == 0) {
+        UIImage *yodaReading = [UIImage imageNamed:@"yodaReading.jpg"];
+        
+        
+        //Oculto todos los datos la primera vez solo la portada
+        [self.titulo setHidden:TRUE];
+        [self.authors setHidden:TRUE];
+        [self.tags setHidden:TRUE];
+        [self.favorite setHidden:TRUE];
+        
+        self.photo.image = yodaReading;
+        self.photo.contentMode = UIViewContentModeScaleToFill;
+        
+        CGRect frame = self.view.frame;
+        frame.size = yodaReading.size;
+        self.photo.frame = frame;
+        
+        self.photo.image = yodaReading;
+        
+    }else{
+    
+        //Muestro los campos
+        [self.titulo setHidden:FALSE];
+        [self.authors setHidden:FALSE];
+        [self.tags setHidden:FALSE];
+        [self.favorite setHidden:FALSE];
+        
     //Cambiamos las fuentes y tamaños
     [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
     
@@ -52,6 +79,8 @@
         //Añado la imagen al boton
         UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [self.favorite setImage:butBla forState:UIControlStateNormal];
+    }
+        
     }
 
     
@@ -96,6 +125,15 @@
     //Actualizo el modelo
     self.model = book;
     
+    //Muestro los campos
+    [self.titulo setHidden:FALSE];
+    [self.authors setHidden:FALSE];
+    [self.tags setHidden:FALSE];
+    [self.favorite setHidden:FALSE];
+    
+    //Cambiamos las fuentes y tamaños
+    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
+    
     //sync modelo y vista
     
     if (self.model.isFavorite) {
@@ -107,8 +145,17 @@
         [self.favorite setImage:butBla forState:UIControlStateNormal];
     }
     
-    self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
+    self.photo.contentMode = UIViewContentModeScaleToFill;
+    
+    CGRect frame = self.view.frame;
+    frame.size = self.model.image.size;
+    self.photo.frame = frame;
+    
+    self.photo.image = self.model.image;
+    
+    self.titulo.text = self.model.titulo;
+    //self.photo.image = self.model.image;
     self.authors.text = self.model.autores.description;
     self.tags.text = self.model.tags.description;
 }

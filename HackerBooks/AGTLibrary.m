@@ -93,24 +93,6 @@
     return nil;
 }
 
-/*
-- (void) didRecieveData{
-    
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"]];
-    
-    __block NSDictionary *json;
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                               json = [NSJSONSerialization JSONObjectWithData:data
-                                                                      options:0
-                                                                        error:nil];
-                               //NSLog(@"Async JSON: %@", json);
-                               self.jsonDownloaded = json;
-                               [self didChangeJSONToData];
-                           }];
-    
-}*/
 
 -(void) didChangeJSONToData {
     

@@ -24,8 +24,6 @@
     //Valor por defecto para el último personaje seleccionado
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     
-    NSLog([def objectForKey:@"firstTime"]);
-    
     if (![def objectForKey:@"firstTime"]) {
         
         //Descargo JSON
@@ -37,12 +35,7 @@
         
         //Por si acaso...
         [def synchronize];
-    }else{
-        NSLog(@" No es la primera vez");
-        
     }
-    
-    NSLog([def objectForKey:@"firstTime"]);
     
     // Creamos una vista de tipo UIWindow
     [self setWindow:[[UIWindow alloc]
@@ -82,6 +75,15 @@
     
     // La mostramos
     [[self window] makeKeyAndVisible];
+    
+    
+    //Alta en notificación de cambio en favoritos
+    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
+    
+    [ncFavorite addObserver:libraryTable
+                   selector:@selector(notifyThatFavoritesDidChange:)
+                       name:@"favoriteChange"
+                     object:nil];
     
     return YES;
 }
@@ -166,8 +168,6 @@
     url = [url URLByAppendingPathComponent:@"JSON.txt"];
     
     //Guardar algo
-    NSError *err = nil;
-    //BOOL rc = [@"Hola Mundo" writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error: &err];
     
     [data writeToURL:url atomically:YES];
 
