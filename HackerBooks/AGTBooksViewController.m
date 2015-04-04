@@ -8,6 +8,7 @@
 
 #import "AGTBooksViewController.h"
 #import "AGTBook.h"
+#import "AGTSimplePDFViewController.h"
 
 @interface AGTBooksViewController ()
 
@@ -163,6 +164,12 @@
 
 -(IBAction)displayPdf:(id)sender{
 
+    // Crear un PDFVC
+    AGTSimplePDFViewController *pdfVC = [[AGTSimplePDFViewController alloc]
+                                  initWithModel:self.model];
+    // Hacer un push
+    [self.navigationController pushViewController:pdfVC
+                                         animated:YES];
     
 }
 

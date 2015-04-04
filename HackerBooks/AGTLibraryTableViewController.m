@@ -38,6 +38,9 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    //Meto esto aquí ya que si lo pongo en el AGTLibraryTableViewController al cerrarse la tabla cuando pongo el simulador horizontal se da de baja de las notificaciones en el dealloc y no las recibe
+    //No creo que esto esté correcto
+#warning Comprobar donde poner la notificación
     //Alta en notificación cargada la tabla
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     

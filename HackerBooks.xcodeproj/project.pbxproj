@@ -20,6 +20,8 @@
 		FB37483A1ACC65110061CAD7 /* AGTLibraryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3748391ACC65110061CAD7 /* AGTLibraryTableViewController.m */; };
 		FB37483F1ACC65860061CAD7 /* AGTBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */; };
 		FB3748401ACC65860061CAD7 /* AGTBooksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */; };
+		FBF8C2A31AD02D3300C8CBE4 /* AGTSimplePDFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF8C2A11AD02D3300C8CBE4 /* AGTSimplePDFViewController.m */; };
+		FBF8C2A41AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBF8C2A21AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,9 @@
 		FB37483C1ACC65860061CAD7 /* AGTBooksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTBooksViewController.h; sourceTree = "<group>"; };
 		FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTBooksViewController.m; sourceTree = "<group>"; };
 		FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTBooksViewController.xib; sourceTree = "<group>"; };
+		FBF8C2A01AD02D3300C8CBE4 /* AGTSimplePDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTSimplePDFViewController.h; sourceTree = "<group>"; };
+		FBF8C2A11AD02D3300C8CBE4 /* AGTSimplePDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTSimplePDFViewController.m; sourceTree = "<group>"; };
+		FBF8C2A21AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTSimplePDFViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +168,9 @@
 				FB37483C1ACC65860061CAD7 /* AGTBooksViewController.h */,
 				FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */,
 				FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */,
+				FBF8C2A01AD02D3300C8CBE4 /* AGTSimplePDFViewController.h */,
+				FBF8C2A11AD02D3300C8CBE4 /* AGTSimplePDFViewController.m */,
+				FBF8C2A21AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -247,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBF8C2A41AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib in Resources */,
 				FB37481C1ACC5F980061CAD7 /* LaunchScreen.xib in Resources */,
 				FB3748401ACC65860061CAD7 /* AGTBooksViewController.xib in Resources */,
 				FB0E30FD1ACF0EE900634377 /* starYe.png in Resources */,
@@ -272,6 +281,7 @@
 			files = (
 				FB3748371ACC60F10061CAD7 /* AGTLibrary.m in Sources */,
 				FB37483A1ACC65110061CAD7 /* AGTLibraryTableViewController.m in Sources */,
+				FBF8C2A31AD02D3300C8CBE4 /* AGTSimplePDFViewController.m in Sources */,
 				FB3748171ACC5F980061CAD7 /* AppDelegate.m in Sources */,
 				FB3748331ACC60B80061CAD7 /* AGTBook.m in Sources */,
 				FB37483F1ACC65860061CAD7 /* AGTBooksViewController.m in Sources */,

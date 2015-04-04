@@ -120,8 +120,9 @@
         NSArray *book1Authores = [[value objectForKey:@"authors"] componentsSeparatedByString:@","];
         NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
         
+        NSURL *pdf = [NSURL URLWithString:[[value objectForKey:@"pdf_url"] description]];
         
-        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:nil isFavorite: FALSE];
+        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:pdf isFavorite: FALSE];
         
         //Voy guardando los tags y los libros primero buscando si ya existe un tag igual para organizar los libros
         for (id c in book1Tags) {
