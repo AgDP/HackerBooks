@@ -22,8 +22,6 @@
 -(NSArray *) bookFavoriteAtIndex:(NSString *) index;
 -(NSArray *) bookTagAtIndex: (NSString *) index;
 
--(id) initWithArray;
-
 //	Número	total	de	libros
 -(NSUInteger)	booksCount;
 

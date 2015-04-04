@@ -30,6 +30,13 @@
     
     if (self = [super init]) {
         
+        self.favoritesBooks = [[NSMutableArray alloc] init];
+        self.booksWithFavorites = [[NSMutableDictionary alloc] init];
+        
+        //Llamamos al JSON
+        //[self didRecieveData];
+        [self obtenerArrayDeJSONInDocuments];
+        [self didChangeJSONToData];
         
         
     }
@@ -38,21 +45,6 @@
     
 }
 
--(id) initWithArray{
-    
-    if (self = [super init]) {
-        
-        self.favoritesBooks = [[NSMutableArray alloc] init];
-        self.booksWithFavorites = [[NSMutableDictionary alloc] init];
-        
-        //Llamamos al JSON
-        //[self didRecieveData];
-        [self obtenerArrayDeJSONInDocuments];
-        [self didChangeJSONToData];
-    }
-    
-    return self;
-}
 
 //Devuelvo un bookFavorite en concreto
 -(NSArray *) bookFavoriteAtIndex:(NSString *) index{

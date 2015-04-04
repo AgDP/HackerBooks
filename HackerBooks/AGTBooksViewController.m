@@ -7,7 +7,6 @@
 //
 
 #import "AGTBooksViewController.h"
-#import "AGTBook.h"
 #import "AGTSimplePDFViewController.h"
 
 @interface AGTBooksViewController ()

@@ -163,6 +163,15 @@
         //te lo mando
         [self.delegate libraryTableViewController:self didSelectedBook:book];
     }
+    
+    // mandamos una notificacion
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    NSDictionary *dict = @{@"bookSelect" : book};
+    
+    NSNotification *n = [NSNotification notificationWithName:@"changeBook" object:self userInfo:dict];
+    
+    [nc postNotification:n];
 
 }
 

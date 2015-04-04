@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AGTLibraryTableViewController.h"
-@class AGTBook;
+#import "AGTBook.h"
 
 
 @interface AGTBooksViewController : UIViewController<UISplitViewControllerDelegate, AGTLibraryTableViewControllerDelegate>

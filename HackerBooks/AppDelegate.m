@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     
-    //Valor por defecto para el último personaje seleccionado
+    //Valor por defecto para saber si es la primera vez
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     
     if (![def objectForKey:@"firstTime"]) {
@@ -35,6 +35,23 @@
         
         //Por si acaso...
         [def synchronize];
+    }else{
+        
+        //Compruebo si existe el fichero. si no existe lo descargo
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/JSON.txt"];
+        
+        if (![fileManager fileExistsAtPath:jsonFile]){
+            
+            NSLog(@"No existe");
+            //Descargo JSON
+           // NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"]];
+            
+            [self didRecieveData];
+
+            
+        }
     }
     
     // Creamos una vista de tipo UIWindow
@@ -42,48 +59,26 @@
                      initWithFrame:[[UIScreen mainScreen] bounds]]];
     
     //Creo el modelo
-    AGTLibrary *library = [[AGTLibrary alloc] initWithArray];
+    AGTLibrary *library = [[AGTLibrary alloc] init];
     
-    //Creo los Controladores
-    AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];
-    
-    AGTBooksViewController *bookController = [[AGTBooksViewController alloc] initWithModel:[self lastSelectedBookInModel:library]];
-    
-    
-    //Creo los navigationControllers
-    UINavigationController *navLib = [UINavigationController new];
-    
-    [navLib pushViewController:libraryTable animated:NO];
-    
-    UINavigationController *navBook = [UINavigationController new];
-    
-    [navBook pushViewController:bookController animated:YES];
+    //Detectamos el tipo de pantalla
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        
+        //Tipo tableta
+        [self configureForPadWithModel: library];
+    }else{
+        
+        //Tipo teléfono
+        [self configureForPhoneWithModel:library];
+    }
     
     
-    //Creo el combinador
-    UISplitViewController *split = [[UISplitViewController alloc] init];
-    
-    [split setViewControllers:@[navLib, navBook]];
-    
-    
-    //Asignamos delegados
-    split.delegate = bookController;
-    libraryTable.delegate = bookController;
-    
-    //La pinto
-    self.window.rootViewController = split;
     
     // La mostramos
     [[self window] makeKeyAndVisible];
     
     
-    //Alta en notificación de cambio en favoritos
-    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
     
-    [ncFavorite addObserver:libraryTable
-                   selector:@selector(notifyThatFavoritesDidChange:)
-                       name:@"favoriteChange"
-                     object:nil];
     
     return YES;
 }
@@ -139,21 +134,16 @@
 
 - (void) didRecieveData{
     
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"]];
+    NSURL *urlJson = [NSURL URLWithString:@"https://t.co/K9ziV0z3SJ"];
     
-    __block NSDictionary *json;
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                               json = [NSJSONSerialization JSONObjectWithData:data
-                                                                      options:0
-                                                                        error:nil];
-                               //NSLog(@"Async JSON: %@", json);
-                               //self.jsonDownloaded = json;
-                               [self saveDataIntoSandbox: (NSData *) data];
-                               [self saveImagesIntoDcouments: (NSDictionary *) json];
-                           }];
+    NSData *data = [NSData dataWithContentsOfURL:urlJson];
     
+    [self saveDataIntoSandbox: (NSData *) data];
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:0
+                                                           error:nil];
+    [self saveImagesIntoDcouments: (NSDictionary *) json];
 }
 
 -(void) saveDataIntoSandbox: (NSData *) data{
@@ -202,6 +192,78 @@
         [bookImage writeToFile:jpgPath atomically:YES];
         
     }
+    
+}
+
+-(void) configureForPadWithModel: (AGTLibrary *) library{
+    
+    //Creo los Controladores
+    AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];
+    
+    AGTBooksViewController *bookController = [[AGTBooksViewController alloc] initWithModel:[self lastSelectedBookInModel:library]];
+    
+    
+    //Creo los navigationControllers
+    UINavigationController *navLib = [UINavigationController new];
+    
+    [navLib pushViewController:libraryTable animated:NO];
+    
+    UINavigationController *navBook = [UINavigationController new];
+    
+    [navBook pushViewController:bookController animated:YES];
+    
+    
+    //Creo el combinador
+    UISplitViewController *split = [[UISplitViewController alloc] init];
+    
+    [split setViewControllers:@[navLib, navBook]];
+    
+    
+    //Asignamos delegados
+    split.delegate = bookController;
+    libraryTable.delegate = bookController;
+    
+    //La pinto
+    self.window.rootViewController = split;
+    
+    
+    // ¿Es correcto poner la notificación aqui?
+    
+    //Alta en notificación de cambio en favoritos
+    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
+    
+    [ncFavorite addObserver:libraryTable
+                   selector:@selector(notifyThatFavoritesDidChange:)
+                       name:@"favoriteChange"
+                     object:nil];
+    
+}
+
+-(void) configureForPhoneWithModel: (AGTLibrary *) library{
+    
+    //Creo el controlador
+    AGTLibraryTableViewController *libraryTable = [[AGTLibraryTableViewController alloc] initWithModel:library style:UITableViewStylePlain];
+    
+    //Creo el combinador
+    UINavigationController *navLib = [UINavigationController new];
+    
+    [navLib pushViewController:libraryTable animated:NO];
+    
+    //Asigno delegado
+    libraryTable.delegate = libraryTable;
+    
+    //La pinto
+    self.window.rootViewController = navLib;
+    
+    // ¿Es correcto poner la notificación aqui?
+    
+    //Alta en notificación de cambio en favoritos
+    NSNotificationCenter *ncFavorite = [NSNotificationCenter defaultCenter];
+    
+    [ncFavorite addObserver:libraryTable
+                   selector:@selector(notifyThatFavoritesDidChange:)
+                       name:@"favoriteChange"
+                     object:nil];
     
 }
 

@@ -31,15 +31,14 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
- /*   //Alta en notificación
+    //Alta en notificación
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     
     [nc addObserver:self
-           selector:@selector(notifyThatCharacterDidChange:)
-               name:CHARACTER_DID_CHANGE_NOTIFICATION_NAME
+           selector:@selector(notifyThatBookDidChange:)
+               name:@"changeBook"
              object:nil];
-    
-   */
+  
     
     // Asegurarse de que no se ocupa toda la pantalla
     // cuando estás en un combinador
@@ -52,11 +51,6 @@
     
     [self.activityView setHidden:NO];
     [self.activityView startAnimating];
-    
-   /* NSData *pdf = [NSData dataWithContentsOfURL:self.model.pdf];
-    
-    [self.browser loadData:pdf MIMEType:@"application/rtf" textEncodingName:@"UTF-8" baseURL:[NSURL URLWithString:@" "]];
-   */
     
     [self.browser loadRequest:[NSURLRequest requestWithURL:self.model.pdf]];
     
@@ -75,13 +69,21 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+-(void) viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    
+    //Me doy de baja de las notificaciones
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UIWebViewDelegate
--(void) webViewDidFinishLoadPdf:(UIWebView *)webView{
+-(void) webViewDidFinishLoad:(UIWebView *)webView{
     
     // Para y oculto el activity
     [self.activityView stopAnimating];
@@ -89,6 +91,24 @@
     
     self.canLoad = NO;
     
+}
+
+
+-(void) notifyThatBookDidChange: (NSNotification *) notification{
+    
+    //Sacamos el personaje
+    AGTBook *book = [notification.userInfo objectForKey:@"bookSelect"];
+    
+    //Actualizamos el modelo
+    self.model = book;
+    
+    //Sincronizamos modelo -> vista
+    self.canLoad = YES;
+    
+    [self.activityView setHidden:NO];
+    [self.activityView startAnimating];
+    
+    [self.browser loadRequest:[NSURLRequest requestWithURL:self.model.pdf]];
 }
 
 /*
