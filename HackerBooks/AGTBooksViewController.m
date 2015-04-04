@@ -51,12 +51,18 @@
         
         CGRect frame = self.view.frame;
         frame.size = yodaReading.size;
-        self.photo.frame = frame;
+        //self.photo.frame = frame;
         
-        self.photo.image = yodaReading;
+        //self.photo.image = yodaReading;
         
     }else{
     
+        // Sincronizar modelo -> vista
+        
+        self.titulo.text = self.model.titulo;
+        self.photo.image = self.model.image;
+        self.authors.text = self.model.autores.description;
+        self.tags.text = self.model.tags.description;
         
         //Muestro los campos
         [self.titulo setHidden:FALSE];
@@ -67,23 +73,19 @@
         //Detectamos el tipo de pantalla
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             //Cambiamos las fuentes y tamaños
-            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
+            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
         }else{
             //Cambiamos las fuentes y tamaños
-            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:10]];
+            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+        
             [self.authors setFont:[UIFont fontWithName:@"Arial" size:10]];
             [self.tags setFont:[UIFont fontWithName:@"Arial" size:10]];
-
-            	
+            
+        
         }
     
     
-    // Sincronizar modelo -> vista
     
-    self.titulo.text = self.model.titulo;
-    self.photo.image = self.model.image;
-    self.authors.text = self.model.autores.description;
-    self.tags.text = self.model.tags.description;
     
     if (self.model.isFavorite) {
         UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -145,7 +147,7 @@
     [self.favorite setHidden:FALSE];
     
     //Cambiamos las fuentes y tamaños
-    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
+    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
     
     //sync modelo y vista
     
@@ -163,9 +165,9 @@
     
     CGRect frame = self.view.frame;
     frame.size = self.model.image.size;
-    self.photo.frame = frame;
+    //self.photo.frame = frame;
     
-    self.photo.image = self.model.image;
+    //self.photo.image = self.model.image;
     
     self.titulo.text = self.model.titulo;
     //self.photo.image = self.model.image;
