@@ -36,6 +36,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     if ([self.model.titulo length] == 0) {
+        
         UIImage *yodaReading = [UIImage imageNamed:@"yodaReading.jpg"];
         
         
@@ -56,14 +57,26 @@
         
     }else{
     
+        
         //Muestro los campos
         [self.titulo setHidden:FALSE];
         [self.authors setHidden:FALSE];
         [self.tags setHidden:FALSE];
         [self.favorite setHidden:FALSE];
         
-    //Cambiamos las fuentes y tamaños
-    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
+        //Detectamos el tipo de pantalla
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            //Cambiamos las fuentes y tamaños
+            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:50]];
+        }else{
+            //Cambiamos las fuentes y tamaños
+            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:10]];
+            [self.authors setFont:[UIFont fontWithName:@"Arial" size:10]];
+            [self.tags setFont:[UIFont fontWithName:@"Arial" size:10]];
+
+            	
+        }
+    
     
     // Sincronizar modelo -> vista
     
