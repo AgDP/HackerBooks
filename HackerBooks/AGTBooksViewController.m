@@ -19,7 +19,7 @@
     
     if (self = [super initWithNibName:nil bundle:nil]) {
         _model = model;
-        self.title = model.titulo;
+        //self.title = model.titulo;
         
     }
     
