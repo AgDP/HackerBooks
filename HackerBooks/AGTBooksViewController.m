@@ -51,9 +51,7 @@
         
         CGRect frame = self.view.frame;
         frame.size = yodaReading.size;
-        //self.photo.frame = frame;
         
-        //self.photo.image = yodaReading;
         
     }else{
     

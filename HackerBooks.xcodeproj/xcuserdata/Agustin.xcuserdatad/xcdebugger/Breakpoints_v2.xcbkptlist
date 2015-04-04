@@ -538,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HackerBooks/AGTBooksViewController.m"
-            timestampString = "449879531.742255"
+            timestampString = "449881828.990707"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "-libraryTableViewController:didSelectedBook:"
             landmarkType = "5">
          </BreakpointContent>
