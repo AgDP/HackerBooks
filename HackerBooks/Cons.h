@@ -16,7 +16,6 @@
 #define NOTIFICATION_DATA_IN_MODEL_KEY @"bookNotify"
 #define NOTIFICATION_DATA_IN_MODEL_DATA @"change"
 #define NOTIFICATION_DATA_IN_MODEL_NAME @"dataChange"
-#define PATH_JSON_DOCUMENT @"Documents/JSON.txt"
 #define TITLE_LIBRARY @"Books"
 #define TITLE_SECTION_FAVORITES @"Favorites"
 #define CELL_ID @"BooksCell"
@@ -34,3 +33,4 @@
 #define PATH_DATA_JSON @"Documents/HackerBook/Data/"
 #define PATH_DATA_PICTURES @"Documents/HackerBook/Pictures/"
 #define PATH_JSON_DOCUMENT @"Documents/HackerBook/Data/JSON.txt"
+#define PATH_FAV_DOCUMENT @"Documents/HackerBook/Data/favorites.txt"

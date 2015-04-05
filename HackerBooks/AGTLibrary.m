@@ -95,6 +95,16 @@
     //Ordeno los tags alfabeticamente
     [self putAlphabetTags];
     
+    //Compruebo si existe el fichero. si no existe lo descargo
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:PATH_FAV_DOCUMENT];
+    
+    if ([fileManager fileExistsAtPath:jsonFile]){
+    
+        [self obtenerArrayDeJSONFavoritesInDocuments];
+    }
+    
     // mandamos una notificacion
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     
@@ -150,6 +160,50 @@
     [tagsLibros sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     
     self.tagsBooks = tagsLibros;
+}
+
+-(void) obtenerArrayDeJSONFavoritesInDocuments{
+    //Averiguar la URL a la carpeta Documents
+    NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:PATH_FAV_DOCUMENT];
+    NSError *error = nil;
+    
+    NSData *JSONData = [NSData dataWithContentsOfFile:jsonFile options:NSDataReadingMappedIfSafe error:&error];
+    
+    // Create an Objective-C object from JSON Data
+    
+    NSArray *json = [NSJSONSerialization JSONObjectWithData:JSONData
+                                                         options:0
+                                                           error:nil];
+    NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
+    NSDictionary *bookWithTag = self.booksWithTags;
+    NSArray *keys = [bookWithTag allKeys];
+    
+    for (NSString *tituloBook in json) {
+        bool existe = false;
+        //Saco los book dentro de los tag para comparar por titulo
+        for (NSString *tags in keys) {
+            NSArray *books = [bookWithTag objectForKey:tags];
+            
+            if (!existe) {
+                
+            for (AGTBook *book in books) {
+            
+                if ([book.titulo isEqualToString:tituloBook]) {
+                    
+                    book.isFavorite = true;
+                    [arrayDeLibrosGuardados addObject:book];
+                    existe = true;
+                    break;
+                }
+
+            }
+            }
+        }
+        
+
+    }
+    
+    [self.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:FAVORITE_KEY_DICTIONARY];
 }
 
 @end

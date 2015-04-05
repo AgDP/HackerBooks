@@ -14,6 +14,7 @@
 
 @interface AppDelegate ()
 
+@property (weak, nonatomic) AGTLibrary *modelFavorites;
 @end
 
 @implementation AppDelegate
@@ -25,7 +26,7 @@
     //Valor por defecto para saber si es la primera vez
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     
-   /* if (![def objectForKey:MARK_FIRST_TIME_NAME]) {
+    if (![def objectForKey:MARK_FIRST_TIME_NAME]) {
         
         //Descargo JSON
         [self didRecieveData];
@@ -49,9 +50,8 @@
 
         }
     }
-    */
-#warning PRUEBAAAAA
-    [self didRecieveData];
+    
+
     
     // Creamos una vista de tipo UIWindow
     [self setWindow:[[UIWindow alloc]
@@ -59,6 +59,8 @@
     
     //Creo el modelo
     AGTLibrary *library = [[AGTLibrary alloc] init];
+    
+    self.modelFavorites = library;
     
     //Detectamos el tipo de pantalla
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -165,6 +167,55 @@
     }
     
 }
+
+//Guardo los favoritos cuando la app entra en background
+-(void) applicationDidEnterBackground:(UIApplication *)application{
+    
+    //Guardar los favoritos
+    //Obtengo el modelo
+    AGTLibrary *library = self.modelFavorites;
+    
+    NSDictionary *favoritesBooks = library.booksWithFavorites;
+    
+    NSArray *favorites = [favoritesBooks objectForKey:@"favorite"];
+    NSError *error;
+    
+    NSMutableArray *nombreLibros = [[NSMutableArray alloc] init];
+    
+    for (AGTBook *book in favorites) {
+        [nombreLibros addObject:book.titulo];
+    }
+        
+    if ([NSJSONSerialization isValidJSONObject:nombreLibros]){
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:nombreLibros options:NSJSONWritingPrettyPrinted error:&error];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"%@", jsonString);
+        
+        
+        //Guardamos el fichero
+        NSMutableString *namFile = [[NSMutableString alloc] init];
+        [namFile appendString:PATH_DATA_JSON];
+        [namFile appendString:@"favorites.txt"];
+        
+        NSString *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:namFile];
+        
+        
+        
+        [jsonData writeToFile:jsonFile atomically:YES];
+        
+    }
+    
+   
+    
+    
+    
+    
+    
+    
+}
+
 
 -(void) configureForPadWithModel: (AGTLibrary *) library{
     
