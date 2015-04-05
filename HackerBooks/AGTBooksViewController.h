@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) AGTBook *model;
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
-@property (weak, nonatomic) IBOutlet UILabel *titulo;
+//@property (weak, nonatomic) IBOutlet UILabel *titulo;
 @property (weak, nonatomic) IBOutlet UILabel *authors;
 @property (weak, nonatomic) IBOutlet UILabel *tags;
 @property (weak, nonatomic) IBOutlet UIButton *favorite;

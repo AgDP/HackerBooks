@@ -19,7 +19,7 @@
     
     if (self = [super initWithNibName:nil bundle:nil]) {
         _model = model;
-        //self.title = model.titulo;
+        self.title = model.titulo;
         
     }
     
@@ -41,7 +41,7 @@
         
         
         //Oculto todos los datos la primera vez solo la portada
-        [self.titulo setHidden:TRUE];
+        //[self.titulo setHidden:TRUE];
         [self.authors setHidden:TRUE];
         [self.tags setHidden:TRUE];
         [self.favorite setHidden:TRUE];
@@ -52,18 +52,21 @@
         CGRect frame = self.view.frame;
         frame.size = yodaReading.size;
         
+        [self showPortada];
+        
+        
         
     }else{
     
         // Sincronizar modelo -> vista
         
-        self.titulo.text = self.model.titulo;
+        //self.titulo.text = self.model.titulo;
         self.photo.image = self.model.image;
         self.authors.text = self.model.autores.description;
         self.tags.text = self.model.tags.description;
         
         //Muestro los campos
-        [self.titulo setHidden:FALSE];
+       // [self.titulo setHidden:FALSE];
         [self.authors setHidden:FALSE];
         [self.tags setHidden:FALSE];
         [self.favorite setHidden:FALSE];
@@ -71,10 +74,10 @@
         //Detectamos el tipo de pantalla
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             //Cambiamos las fuentes y tamaños
-            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+           // [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
         }else{
             //Cambiamos las fuentes y tamaños
-            [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+          //  [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
         
             [self.authors setFont:[UIFont fontWithName:@"Arial" size:10]];
             [self.tags setFont:[UIFont fontWithName:@"Arial" size:10]];
@@ -82,17 +85,18 @@
         
         }
     
+        [self hiddenPortada];
     
     
     
-    if (self.model.isFavorite) {
-        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [self.favorite setImage:butYe forState:UIControlStateNormal];
-    }else{
-        //Añado la imagen al boton
-        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [self.favorite setImage:butBla forState:UIControlStateNormal];
-    }
+        if (self.model.isFavorite) {
+            UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            [self.favorite setImage:butYe forState:UIControlStateNormal];
+        }else{
+            //Añado la imagen al boton
+            UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            [self.favorite setImage:butBla forState:UIControlStateNormal];
+        }
         
     }
 
@@ -111,6 +115,17 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void) viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    
+    NSLog(@"Paso");
+}
+
+-(void) dealloc{
+
+    NSLog(@"Paso");
 }
 
 #pragma mark - UISplitViewControllerDelegate
@@ -139,13 +154,13 @@
     self.model = book;
     
     //Muestro los campos
-    [self.titulo setHidden:FALSE];
+   // [self.titulo setHidden:FALSE];
     [self.authors setHidden:FALSE];
     [self.tags setHidden:FALSE];
     [self.favorite setHidden:FALSE];
     
     //Cambiamos las fuentes y tamaños
-    [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+  //  [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
     
     //sync modelo y vista
     
@@ -157,20 +172,16 @@
         UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [self.favorite setImage:butBla forState:UIControlStateNormal];
     }
+
+    [self hiddenPortada];
     
+  //  self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
-    self.photo.contentMode = UIViewContentModeScaleToFill;
-    
-    CGRect frame = self.view.frame;
-    frame.size = self.model.image.size;
-    //self.photo.frame = frame;
-    
-    //self.photo.image = self.model.image;
-    
-    self.titulo.text = self.model.titulo;
-    //self.photo.image = self.model.image;
     self.authors.text = self.model.autores.description;
     self.tags.text = self.model.tags.description;
+    
+    //Actualizo el titulo del libro en el NavigationC
+    self.title = self.model.titulo;
 }
 
 
@@ -215,6 +226,68 @@
     
     
     
+    
+}
+
+//Muestro todos los campos para rellenarlos y mostrar los datos
+-(void) hiddenPortada{
+    
+    NSMutableArray *allSubviews     = [[NSMutableArray alloc] initWithObjects: nil];
+    NSMutableArray *currentSubviews = [[NSMutableArray alloc] initWithObjects: self.view, nil];
+    NSMutableArray *newSubviews     = [[NSMutableArray alloc] initWithObjects: self.view, nil];
+    
+    while (newSubviews.count) {
+        
+        [newSubviews removeAllObjects];
+        
+        for (UIView *view in currentSubviews) {
+            
+            for (UIView *subview in view.subviews){
+                [newSubviews addObject:subview];
+                if (subview.tag == 1) {
+                    [subview setHidden:FALSE];
+                }
+            }
+            
+        }
+        
+        [currentSubviews removeAllObjects];
+        [currentSubviews addObjectsFromArray:newSubviews];
+        [allSubviews addObjectsFromArray:newSubviews];
+        
+    }
+    
+    
+}
+
+//Oculto los datos para mostrar una foto de portada utilizando el UIIMAGE ya creado
+-(void) showPortada{
+    
+    NSMutableArray *allSubviews     = [[NSMutableArray alloc] initWithObjects: nil];
+    NSMutableArray *currentSubviews = [[NSMutableArray alloc] initWithObjects: self.view, nil];
+    NSMutableArray *newSubviews     = [[NSMutableArray alloc] initWithObjects: self.view, nil];
+    
+    while (newSubviews.count) {
+        
+        [newSubviews removeAllObjects];
+        
+        for (UIView *view in currentSubviews) {
+            
+            for (UIView *subview in view.subviews){
+                [newSubviews addObject:subview];
+                if (subview.tag == 1) {
+                    [subview setHidden:TRUE];
+                }
+                
+            }
+            
+        }
+        
+        [currentSubviews removeAllObjects];
+        [currentSubviews addObjectsFromArray:newSubviews];
+        [allSubviews addObjectsFromArray:newSubviews];
+        
+    }
     
 }
 
