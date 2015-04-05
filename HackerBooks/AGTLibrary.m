@@ -72,7 +72,7 @@
         //UIImage *image = [UIImage imageWithData:bookImage];
         //Guardamos la imagen con el nombre del libro + jpg
         NSMutableString *nombreLibro = [[NSMutableString alloc] init];
-        [nombreLibro appendString:@"Documents/"];
+        [nombreLibro appendString:PATH_DATA_PICTURES];
         [nombreLibro appendString:[value objectForKey:TITLE_JSON_KEY]];
         [nombreLibro appendString:@".jpg"];
         

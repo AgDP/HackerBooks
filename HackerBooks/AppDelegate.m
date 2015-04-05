@@ -25,7 +25,7 @@
     //Valor por defecto para saber si es la primera vez
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     
-    if (![def objectForKey:MARK_FIRST_TIME_NAME]) {
+   /* if (![def objectForKey:MARK_FIRST_TIME_NAME]) {
         
         //Descargo JSON
         [self didRecieveData];
@@ -49,6 +49,9 @@
 
         }
     }
+    */
+#warning PRUEBAAAAA
+    [self didRecieveData];
     
     // Creamos una vista de tipo UIWindow
     [self setWindow:[[UIWindow alloc]
@@ -96,10 +99,15 @@
 
 -(void) saveDataIntoSandbox: (NSData *) data{
     
-    //Averiguar la URL a la carpeta Documents
-    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString  *folderHackerBook = [NSHomeDirectory() stringByAppendingPathComponent:PATH_DATA_JSON];
+    NSError *err;
     
-    NSArray *urls = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager createDirectoryAtPath:folderHackerBook withIntermediateDirectories:YES attributes:nil error:&err];
+    
+    //Averiguar la URL a la carpeta Documents
+    
+   /* NSArray *urls = [fm URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     NSURL *url = [urls lastObject];
     
     //Añadir el componente del nombre del fichero
@@ -108,11 +116,29 @@
     //Guardar algo
     
     [data writeToURL:url atomically:YES];
-
+    */
+    
+    NSMutableString *namFile = [[NSMutableString alloc] init];
+    [namFile appendString:PATH_DATA_JSON];
+    [namFile appendString:NAME_FILE_JSON];
+    
+    NSString *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:namFile];
+    
+    
+    
+    [data writeToFile:jsonFile atomically:YES];
     
 }
 
 -(void) saveImagesIntoDcouments: (NSDictionary *) json{
+    
+    NSString  *folderHackerBook = [NSHomeDirectory() stringByAppendingPathComponent:PATH_DATA_PICTURES];
+    NSError *err;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager createDirectoryAtPath:folderHackerBook withIntermediateDirectories:YES attributes:nil error:&err];
+    
+    
     
     NSDictionary *dictobj = json;
     for (id key in dictobj)
@@ -125,7 +151,7 @@
         
         //Guardamos la imagen con el nombre del libro + jpg
         NSMutableString *nombreLibro = [[NSMutableString alloc] init];
-        [nombreLibro appendString:@"Documents/"];
+        [nombreLibro appendString:PATH_DATA_PICTURES];
         [nombreLibro appendString:[value objectForKey:TITLE_JSON_KEY]];
         [nombreLibro appendString:@".jpg"];
         

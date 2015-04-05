@@ -31,3 +31,6 @@
 #define MARK_FIRST_TIME_NAME @"firstTime"
 #define NAME_FILE_JSON @"JSON.txt"
 #define URL_JSON_DOWNLOAD @"https://t.co/K9ziV0z3SJ"
+#define PATH_DATA_JSON @"Documents/HackerBook/Data/"
+#define PATH_DATA_PICTURES @"Documents/HackerBook/Pictures/"
+#define PATH_JSON_DOCUMENT @"Documents/HackerBook/Data/JSON.txt"
