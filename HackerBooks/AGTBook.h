@@ -26,4 +26,7 @@
                  pdf: (NSURL *) pdf
           isFavorite: (BOOL) isFavorite;
 
+-(NSString *) authorInString;
+-(NSString *) tagsInString;
+
 @end

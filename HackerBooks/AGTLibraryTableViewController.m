@@ -10,6 +10,7 @@
 #import "AGTLibrary.h"
 #import "AGTBooksViewController.h"
 #import "AGTBook.h"
+#import "Cons.h"
 
 @interface AGTLibraryTableViewController ()
 
@@ -22,7 +23,7 @@
     
     if (self = [super initWithStyle:style]) {
         _model = model;
-        self.title = @"Books";
+        self.title = TITLE_LIBRARY;
     }
     
     return self;
@@ -46,7 +47,7 @@
     
     [nc addObserver:self
            selector:@selector(notifyThatBooksDidChange:)
-               name:@"dataChange"
+               name:NOTIFICATION_DATA_IN_MODEL_NAME
              object:nil];
     
     
@@ -93,7 +94,7 @@
 
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if (section == FAVORITE_SECTION) {
-        return @"Favorites";
+        return TITLE_SECTION_FAVORITES;
     }else{
         return [self.model.tagsBooks objectAtIndex:section-1];
     }
@@ -102,25 +103,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSArray *tags = nil;
-    
-    if (indexPath.section == FAVORITE_SECTION) {
-        tags = [self.model bookFavoriteAtIndex:@"favorite"];
-    }else{
-        NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
-        
-        tags = [self.model bookTagAtIndex:tag];
-    }
-    AGTBook *book = [tags objectAtIndex:indexPath.row];
-    
-    
+    //Obtener el book para la fila
+    AGTBook *book = [self rowAtIndexPath: indexPath];
+ 
     //Crear una celda
-    static NSString *cellId = @"BooksCell";
+    static NSString *cellId = CELL_ID;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     
     if (cell == nil) {
         //La tenemos que crear nosotros desde cero
-        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
     }
     
@@ -128,7 +119,7 @@
     //Sincronizar modelo (pj) con la vista (celda)
     cell.imageView.image = book.image;
     cell.textLabel.text = book.titulo;
-    cell.detailTextLabel.text = book.autores;
+    cell.detailTextLabel.text = book.authorInString;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 
@@ -137,25 +128,30 @@
     return cell;
 }
 
+-(AGTBook *) rowAtIndexPath: (NSIndexPath *) indexPath{
+    
+    NSArray *tags = nil;
+    
+    if (indexPath.section == FAVORITE_SECTION) {
+        tags = [self.model bookFavoriteAtIndex:FAVORITE_KEY_DICTIONARY];
+    }else{
+        NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
+        
+        tags = [self.model bookTagAtIndex:tag];
+    }
+    AGTBook *book = [tags objectAtIndex:indexPath.row];
+    
+    return book;
+}
+
 
 
 #pragma mark - Delegate
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
-    //AGTBook *book = nil;
-    NSArray *tags = nil;
-    
-    if (indexPath.section == FAVORITE_SECTION) {
-        tags = [self.model bookFavoriteAtIndex:@"favorite"];
-    }else{
-        NSString *tag = [self.model.tagsBooks objectAtIndex:indexPath.section-1];
-        
-        tags = [self.model bookTagAtIndex:tag];
-        
-        //book = [self.model bookTagAtIndex:indexPath.description];
-    }
-    AGTBook *book = [tags objectAtIndex:indexPath.row];
+    //Obtener el book seleccionado
+    AGTBook *book = [self rowAtIndexPath: indexPath];
     
     //Avisar al delegado siempre y cuando entienda el mensaje
     if ([self.delegate respondsToSelector:@selector(libraryTableViewController:didSelectedBook:)])  {
@@ -167,9 +163,9 @@
     // mandamos una notificacion
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     
-    NSDictionary *dict = @{@"bookSelect" : book};
+    NSDictionary *dict = @{NOTIFICATION_SELECT_BOOK_LIBRARY_KEY : book};
     
-    NSNotification *n = [NSNotification notificationWithName:@"changeBook" object:self userInfo:dict];
+    NSNotification *n = [NSNotification notificationWithName:NOTIFICATION_SELECT_BOOK_LIBRARY_NAME object:self userInfo:dict];
     
     [nc postNotification:n];
 
@@ -213,7 +209,7 @@
             book.isFavorite = FALSE;
             
             
-            NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:@"favorite"];
+            NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:FAVORITE_KEY_DICTIONARY];
             
             //Me creo este array para la iteracion ya que si no falla al añadir al mismo array
             NSMutableArray *arrayParaIterar = [[NSMutableArray alloc] init];
@@ -223,8 +219,6 @@
             //******CAmbiar esto que hace daño a los ojos********
             for (AGTBook* obj in arrayParaIterar){
                 if([obj.titulo isEqualToString: book.titulo]){
-                    NSLog(@"index: %d",[arrayDeLibrosGuardados indexOfObject:obj]);
-                    NSLog(@"Nombre libro: %@, y borarremos: %@",book.titulo,[[arrayDeLibrosGuardados objectAtIndex:[arrayDeLibrosGuardados indexOfObject:obj]] titulo]);
                     [arrayDeLibrosGuardados removeObjectAtIndex:[arrayDeLibrosGuardados indexOfObject:obj]];
                     
                 }
@@ -234,8 +228,8 @@
             
         }else{
             book.isFavorite = TRUE;
-            if ([self.model.booksWithFavorites objectForKey:@"favorite"]) {
-                NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:@"favorite"];
+            if ([self.model.booksWithFavorites objectForKey:FAVORITE_KEY_DICTIONARY]) {
+                NSMutableArray *arrayDeLibrosGuardados = [self.model.booksWithFavorites objectForKey:FAVORITE_KEY_DICTIONARY];
                 
                 //Me creo este array para la iteracion ya que si no falla al añadir al mismo array
                 NSMutableArray *arrayParaIterar = [[NSMutableArray alloc] init];
@@ -250,16 +244,14 @@
                 }
                 if (!existe) {
                     [arrayDeLibrosGuardados addObject:book];
-                    [self.model.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:@"favorite"];
-                    // [self.model.favoritesBooks addObject:book.titulo];
+                    [self.model.booksWithFavorites setValue:arrayDeLibrosGuardados forKey:FAVORITE_KEY_DICTIONARY];
                 }
                 
                 
             }else{
                 NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
                 [arrayDeLibrosGuardados addObject:book];
-                [self.model.booksWithFavorites addEntriesFromDictionary:@{@"favorite":arrayDeLibrosGuardados}];
-                // [self.model.favoritesBooks addObject:book.titulo];
+                [self.model.booksWithFavorites addEntriesFromDictionary:@{FAVORITE_KEY_DICTIONARY:arrayDeLibrosGuardados}];
             }
         }
         
@@ -267,10 +259,7 @@
         
         
     }
-    
-    NSLog(@"numero de favoritos: %d",self.model.favoritesCount);
-    
-    
+
     //Actualizo la tabla cuando carga los datos
     [self.tableView reloadData];
     

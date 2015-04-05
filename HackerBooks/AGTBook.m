@@ -7,6 +7,7 @@
 //
 
 #import "AGTBook.h"
+#import "Cons.h"
 
 @implementation AGTBook
 
@@ -30,29 +31,30 @@
     return self;
 }
 
--(NSString *) autores{
+
+-(NSString *) authorInString{
     
     NSMutableString *cadena = [[NSMutableString alloc] init];
-
+    
     for (int i=0; i < _autores.count; i++) {
         if (i > 0) {
-            [cadena appendString:@","];
+            [cadena appendString:SEPARETE_ARRAY_JSON];
         }
         [cadena appendString:_autores[i]];
-            
+        
     }
     
     
     return cadena;
 }
 
--(NSString *) tags{
+-(NSString *) tagsInString{
     
     NSMutableString *cadena = [[NSMutableString alloc] init];
     
     for (int i=0; i < _tags.count; i++) {
         if (i > 0) {
-            [cadena appendString:@","];
+            [cadena appendString:SEPARETE_ARRAY_JSON];
         }
         [cadena appendString:_tags[i]];
         
@@ -60,7 +62,6 @@
     
     
     return cadena;
-    
 }
 
 @end

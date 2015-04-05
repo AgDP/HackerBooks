@@ -57,6 +57,7 @@
 		FB37483C1ACC65860061CAD7 /* AGTBooksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTBooksViewController.h; sourceTree = "<group>"; };
 		FB37483D1ACC65860061CAD7 /* AGTBooksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTBooksViewController.m; sourceTree = "<group>"; };
 		FB37483E1ACC65860061CAD7 /* AGTBooksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTBooksViewController.xib; sourceTree = "<group>"; };
+		FB8BFA711AD15019004F1873 /* Cons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cons.h; sourceTree = "<group>"; };
 		FBF8C2A01AD02D3300C8CBE4 /* AGTSimplePDFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGTSimplePDFViewController.h; sourceTree = "<group>"; };
 		FBF8C2A11AD02D3300C8CBE4 /* AGTSimplePDFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGTSimplePDFViewController.m; sourceTree = "<group>"; };
 		FBF8C2A21AD02D3300C8CBE4 /* AGTSimplePDFViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTSimplePDFViewController.xib; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 				FB3748111ACC5F980061CAD7 /* Supporting Files */,
 				FB3748341ACC60BD0061CAD7 /* Models */,
 				FB37483B1ACC65150061CAD7 /* Controllers */,
+				FB8BFA711AD15019004F1873 /* Cons.h */,
 			);
 			path = HackerBooks;
 			sourceTree = "<group>";

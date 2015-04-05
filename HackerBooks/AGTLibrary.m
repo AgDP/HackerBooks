@@ -7,6 +7,7 @@
 //
 
 #import "AGTLibrary.h"
+#import "Cons.h"
 
 
 @interface AGTLibrary ()
@@ -19,7 +20,7 @@
 
 #pragma mark - Properties
 -(NSUInteger) favoritesCount{
-    return [[self.booksWithFavorites objectForKey:@"favorite"]count];
+    return [[self.booksWithFavorites objectForKey:FAVORITE_KEY_DICTIONARY]count];
 }
 
 -(NSUInteger) tagsCount{
@@ -34,7 +35,6 @@
         self.booksWithFavorites = [[NSMutableDictionary alloc] init];
         
         //Llamamos al JSON
-        //[self didRecieveData];
         [self obtenerArrayDeJSONInDocuments];
         [self didChangeJSONToData];
         
@@ -57,35 +57,6 @@
 }
 
 
--(NSUInteger)	booksCount{
-    
-    return nil;
-}
-
--(NSArray*)	tags{
-    
-    
-    return nil;
-}
-
--(NSUInteger) bookCountForTag:(NSString*) tag{
-    
-    
-    return nil;
-}
-
--(NSArray*)	booksForTag: (NSString *) tag{
-    
-    return nil;
-}
-
--(AGTBook*)	bookForTag:(NSString*) tag atIndex:(NSUInteger) index{
-    
-    
-    return nil;
-}
-
-
 -(void) didChangeJSONToData {
     
 
@@ -102,52 +73,34 @@
         //Guardamos la imagen con el nombre del libro + jpg
         NSMutableString *nombreLibro = [[NSMutableString alloc] init];
         [nombreLibro appendString:@"Documents/"];
-        [nombreLibro appendString:[value objectForKey:@"title"]];
+        [nombreLibro appendString:[value objectForKey:TITLE_JSON_KEY]];
         [nombreLibro appendString:@".jpg"];
         
         //Averiguar la URL a la carpeta Documents
         NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:nombreLibro];
         UIImage* image = [UIImage imageWithContentsOfFile:jpgPath];
         
-        NSArray *book1Authores = [[value objectForKey:@"authors"] componentsSeparatedByString:@","];
-        NSArray *book1Tags = [[value objectForKey:@"tags"] componentsSeparatedByString:@", "];
+        NSArray *bookAuthores = [[value objectForKey:AUTHOR_JSON_KEY] componentsSeparatedByString:SEPARETE_ARRAY_JSON];
+        NSArray *bookTags = [[value objectForKey:TAGS_JSON_KEY] componentsSeparatedByString:SEPARETE_ARRAY_JSON_WITH_SPACE];
         
-        NSURL *pdf = [NSURL URLWithString:[[value objectForKey:@"pdf_url"] description]];
+        NSURL *pdf = [NSURL URLWithString:[[value objectForKey:PDF_JSON_KEY] description]];
         
-        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:@"title"] autores:book1Authores tags:book1Tags image:image pdf:pdf isFavorite: FALSE];
+        AGTBook *book = [[AGTBook alloc] initWithTitulo:[value objectForKey:TITLE_JSON_KEY] autores:bookAuthores tags:bookTags image:image pdf:pdf isFavorite: FALSE];
         
         //Voy guardando los tags y los libros primero buscando si ya existe un tag igual para organizar los libros
-        for (id c in book1Tags) {
-            if ([self.booksWithTags objectForKey:c]) {
-                NSMutableArray *arrayDeLibrosGuardados = [self.booksWithTags objectForKey:c];
-                [arrayDeLibrosGuardados addObject:book];
-                [self.booksWithTags setValue:arrayDeLibrosGuardados forKey:c];
-            }else{
-                NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
-                [arrayDeLibrosGuardados addObject:book];
-                [self.booksWithTags addEntriesFromDictionary:@{c:arrayDeLibrosGuardados}];
-            }
-        }
+        [self saveDataTags: bookTags andBook:book];
         
     }
     
     //Ordeno los tags alfabeticamente
-    NSMutableArray *tagsLibros = [[NSMutableArray alloc] init];
-    for (id keyTags in self.booksWithTags) {
-        [tagsLibros addObject:keyTags];
-    }
-    
-    [tagsLibros sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    self.tagsBooks = tagsLibros;
-    //self.favoritesBooks = @[book1,book1];
+    [self putAlphabetTags];
     
     // mandamos una notificacion
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     
-    NSDictionary *dict = @{@"bookNotify" : @"change"};
+    NSDictionary *dict = @{NOTIFICATION_DATA_IN_MODEL_KEY : NOTIFICATION_DATA_IN_MODEL_DATA};
     
-    NSNotification *n = [NSNotification notificationWithName:@"dataChange" object:self userInfo:dict];
+    NSNotification *n = [NSNotification notificationWithName:NOTIFICATION_DATA_IN_MODEL_NAME object:self userInfo:dict];
     
     [nc postNotification:n];
     
@@ -158,7 +111,7 @@
 -(void) obtenerArrayDeJSONInDocuments{
     
     //Averiguar la URL a la carpeta Documents
-    NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/JSON.txt"];
+    NSString  *jsonFile = [NSHomeDirectory() stringByAppendingPathComponent:PATH_JSON_DOCUMENT];
     NSError *error = nil;
     
     NSData *JSONData = [NSData dataWithContentsOfFile:jsonFile options:NSDataReadingMappedIfSafe error:&error];
@@ -170,6 +123,33 @@
                                                      error:nil];
     
     self.jsonDownloaded = json;
+}
+
+-(void) saveDataTags: (NSArray *) bookTag andBook:(AGTBook *) book{
+    
+    for (id c in bookTag) {
+        if ([self.booksWithTags objectForKey:c]) {
+            NSMutableArray *arrayDeLibrosGuardados = [self.booksWithTags objectForKey:c];
+            [arrayDeLibrosGuardados addObject:book];
+            [self.booksWithTags setValue:arrayDeLibrosGuardados forKey:c];
+        }else{
+            NSMutableArray *arrayDeLibrosGuardados = [[NSMutableArray alloc] init];
+            [arrayDeLibrosGuardados addObject:book];
+            [self.booksWithTags addEntriesFromDictionary:@{c:arrayDeLibrosGuardados}];
+        }
+    }
+}
+
+-(void) putAlphabetTags{
+    
+    NSMutableArray *tagsLibros = [[NSMutableArray alloc] init];
+    for (id keyTags in self.booksWithTags) {
+        [tagsLibros addObject:keyTags];
+    }
+    
+    [tagsLibros sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    self.tagsBooks = tagsLibros;
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AGTSimplePDFViewController.h"
+#import "Cons.h"
 
 @interface AGTSimplePDFViewController ()
 
@@ -21,7 +22,7 @@
     if (self = [super initWithNibName:nil bundle:nil]) {
         
         _model = model;
-        self.title = model.titulo;
+        self.title = TITLE_PDF;
         _canLoad = YES;
     }
     
@@ -36,7 +37,7 @@
     
     [nc addObserver:self
            selector:@selector(notifyThatBookDidChange:)
-               name:@"changeBook"
+               name:NOTIFICATION_SELECT_BOOK_LIBRARY_NAME
              object:nil];
   
     
@@ -47,12 +48,8 @@
     
     
     // sincronizar modelo -> vista
-    self.canLoad = YES;
-    
-    [self.activityView setHidden:NO];
-    [self.activityView startAnimating];
-    
-    [self.browser loadRequest:[NSURLRequest requestWithURL:self.model.pdf]];
+    [self syncModelWithView];
+
     
 }
 
@@ -97,12 +94,16 @@
 -(void) notifyThatBookDidChange: (NSNotification *) notification{
     
     //Sacamos el personaje
-    AGTBook *book = [notification.userInfo objectForKey:@"bookSelect"];
+    AGTBook *book = [notification.userInfo objectForKey:NOTIFICATION_SELECT_BOOK_LIBRARY_KEY];
     
     //Actualizamos el modelo
     self.model = book;
     
     //Sincronizamos modelo -> vista
+    [self syncModelWithView];
+}
+
+-(void) syncModelWithView{
     self.canLoad = YES;
     
     [self.activityView setHidden:NO];
@@ -110,15 +111,5 @@
     
     [self.browser loadRequest:[NSURLRequest requestWithURL:self.model.pdf]];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

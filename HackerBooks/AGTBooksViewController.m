@@ -8,6 +8,7 @@
 
 #import "AGTBooksViewController.h"
 #import "AGTSimplePDFViewController.h"
+#import "Cons.h"
 
 @interface AGTBooksViewController ()
 
@@ -37,20 +38,18 @@
     
     if ([self.model.titulo length] == 0) {
         
-        UIImage *yodaReading = [UIImage imageNamed:@"yodaReading.jpg"];
+        UIImage *yodaReading = [UIImage imageNamed:PORTADA_IMAGE];
         
         
         //Oculto todos los datos la primera vez solo la portada
-        //[self.titulo setHidden:TRUE];
-        [self.authors setHidden:TRUE];
-        [self.tags setHidden:TRUE];
-        [self.favorite setHidden:TRUE];
+        [self hiddenDataInView];
+
+        
         
         self.photo.image = yodaReading;
         self.photo.contentMode = UIViewContentModeScaleToFill;
         
-        CGRect frame = self.view.frame;
-        frame.size = yodaReading.size;
+
         
         [self showPortada];
         
@@ -60,29 +59,22 @@
     
         // Sincronizar modelo -> vista
         
-        //self.titulo.text = self.model.titulo;
         self.photo.image = self.model.image;
-        self.authors.text = self.model.autores.description;
-        self.tags.text = self.model.tags.description;
+        self.authors.text = self.model.authorInString;
+        self.tags.text = self.model.tagsInString;
         
         //Muestro los campos
-       // [self.titulo setHidden:FALSE];
-        [self.authors setHidden:FALSE];
-        [self.tags setHidden:FALSE];
-        [self.favorite setHidden:FALSE];
+        
+        [self showDataInView];
+        
+        
         
         //Detectamos el tipo de pantalla
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            //Cambiamos las fuentes y tamaños
-           // [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
-        }else{
-            //Cambiamos las fuentes y tamaños
-          //  [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         
             [self.authors setFont:[UIFont fontWithName:@"Arial" size:10]];
             [self.tags setFont:[UIFont fontWithName:@"Arial" size:10]];
             
-        
         }
     
         [self hiddenPortada];
@@ -90,11 +82,11 @@
     
     
         if (self.model.isFavorite) {
-            UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            UIImage *butYe = [[UIImage imageNamed:IMAGE_STAR_YELLOW] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             [self.favorite setImage:butYe forState:UIControlStateNormal];
         }else{
             //Añado la imagen al boton
-            UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            UIImage *butBla = [[UIImage imageNamed:IMAGE_STAR_BLACK] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             [self.favorite setImage:butBla forState:UIControlStateNormal];
         }
         
@@ -154,31 +146,24 @@
     self.model = book;
     
     //Muestro los campos
-   // [self.titulo setHidden:FALSE];
-    [self.authors setHidden:FALSE];
-    [self.tags setHidden:FALSE];
-    [self.favorite setHidden:FALSE];
-    
-    //Cambiamos las fuentes y tamaños
-  //  [self.titulo setFont:[UIFont fontWithName:@"Arial" size:20]];
+    [self showDataInView];
     
     //sync modelo y vista
     
     if (self.model.isFavorite) {
-        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *butYe = [[UIImage imageNamed:IMAGE_STAR_YELLOW] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [self.favorite setImage:butYe forState:UIControlStateNormal];
     }else{
         //Añado la imagen al boton
-        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *butBla = [[UIImage imageNamed:IMAGE_STAR_BLACK] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [self.favorite setImage:butBla forState:UIControlStateNormal];
     }
 
     [self hiddenPortada];
     
-  //  self.titulo.text = self.model.titulo;
     self.photo.image = self.model.image;
-    self.authors.text = self.model.autores.description;
-    self.tags.text = self.model.tags.description;
+    self.authors.text = self.model.authorInString;
+    self.tags.text = self.model.tagsInString;
     
     //Actualizo el titulo del libro en el NavigationC
     self.title = self.model.titulo;
@@ -206,18 +191,18 @@
     UIButton *button = (UIButton *)sender;
     
     if (!self.model.isFavorite) {
-        UIImage *butYe = [[UIImage imageNamed:@"starYe.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *butYe = [[UIImage imageNamed:IMAGE_STAR_YELLOW] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [button setImage:butYe forState:UIControlStateNormal];
     }else{
         //Añado la imagen al boton
-        UIImage *butBla = [[UIImage imageNamed:@"starBla.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *butBla = [[UIImage imageNamed:IMAGE_STAR_BLACK] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         [button setImage:butBla forState:UIControlStateNormal];
     }
     
     
-    NSDictionary *dict = @{@"bookFavorite" : book};
+    NSDictionary *dict = @{NOTIFICATION_MARK_BOOK_FAVORITE_KEY : book};
     
-    NSNotification *n = [NSNotification notificationWithName:@"favoriteChange" object:self userInfo:dict];
+    NSNotification *n = [NSNotification notificationWithName:NOTIFICATION_MARK_BOOK_FAVORITE_NAME object:self userInfo:dict];
     
     [nc postNotification:n];
     
@@ -289,6 +274,20 @@
         
     }
     
+}
+
+-(void) hiddenDataInView{
+    
+    [self.authors setHidden:TRUE];
+    [self.tags setHidden:TRUE];
+    [self.favorite setHidden:TRUE];
+}
+
+-(void) showDataInView{
+    
+    [self.authors setHidden:FALSE];
+    [self.tags setHidden:FALSE];
+    [self.favorite setHidden:FALSE];
 }
 
 @end
